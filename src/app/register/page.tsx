@@ -79,7 +79,7 @@ export default function RegisterPage() {
               loop
               className="w-full max-w-sm"
               style={{ background: "transparent" }}
-              rendererSettings={{ preserveAspectRatio: "xMidYMid meet", clearCanvas: true }}
+              rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }}
             />
             <div className="flex flex-wrap justify-center gap-3 mt-2">
               {["🇪🇸 Spanish", "🇫🇷 French", "🇩🇪 German", "🇯🇵 Japanese"].map((lang) => (
