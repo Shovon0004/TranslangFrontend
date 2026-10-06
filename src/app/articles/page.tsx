@@ -37,96 +37,86 @@ export default function ArticlesPage() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-2.5 tracking-tight">
-              <span className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-[#06555A] to-[#0A7A82] text-white flex items-center justify-center shadow">
-                <BookOpen className="w-5 h-5" />
-              </span>
-              Bilingual Articles
-            </h1>
-            <p className="text-slate-600 text-xs sm:text-sm mt-1">
-              Read authentic international literature &amp; test your reading comprehension with AI
-            </p>
-          </div>
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Articles</h1>
+          <p className="text-gray-500 text-sm mt-1">
+            Read articles and test your comprehension — earn XP for correct answers!
+          </p>
         </div>
 
         {/* XP Info Banner */}
-        <div className="flex items-center gap-3 bg-amber-50/80 border border-amber-200/80 rounded-3xl px-5 py-3.5 mb-7 shadow-sm">
-          <Star className="w-5 h-5 text-amber-500 fill-amber-500 flex-shrink-0" />
-          <p className="text-amber-900 text-xs sm:text-sm font-semibold">
-            Earn <span className="font-extrabold text-amber-700">+10 XP</span> for each comprehension question answered accurately after reading.
+        <div className="flex items-center gap-3 bg-yellow-50 border border-yellow-200 rounded-2xl px-5 py-3 mb-7">
+          <Star className="w-5 h-5 text-yellow-500 flex-shrink-0" />
+          <p className="text-yellow-700 text-sm font-medium">
+            Earn <span className="font-bold">10 XP</span> for each correct comprehension answer after reading an article.
           </p>
         </div>
 
         {/* Loading */}
         {loading && (
-          <div className="flex justify-center py-12">
+          <div className="flex justify-center py-10">
             <SandyLoading size={180} />
           </div>
         )}
 
         {/* Error */}
         {error && (
-          <div className="text-center py-20 text-rose-500 glass-card-light rounded-3xl p-8">
-            <p className="font-semibold text-sm">{error}</p>
+          <div className="text-center py-20 text-red-500">
+            <p>{error}</p>
           </div>
         )}
 
         {/* Empty */}
         {!loading && !error && articles.length === 0 && (
-          <div className="text-center py-20 glass-card-light rounded-3xl p-8">
-            <BookOpen className="w-12 h-12 mx-auto mb-3 text-slate-300" />
-            <p className="font-bold text-slate-700">No articles available yet</p>
-            <p className="text-xs text-slate-400 mt-1">Check back soon for new publications!</p>
+          <div className="text-center py-20 text-gray-400">
+            <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-40" />
+            <p className="font-medium">No articles available yet</p>
+            <p className="text-sm mt-1">Check back soon!</p>
           </div>
         )}
 
         {/* Articles Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {articles.map((article) => (
             <Link
               key={article._id}
               href={`/articles/${article._id}`}
-              className="group glass-card-light hover:shadow-2xl border border-white/80 rounded-3xl overflow-hidden transition-all duration-300 flex flex-col hover:-translate-y-1.5"
+              className="group bg-white hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-all duration-200 flex flex-col shadow-sm"
             >
               {article.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <div className="w-full h-44 overflow-hidden relative">
-                  <img
-                    src={article.image}
-                    alt=""
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
-                </div>
+                <img
+                  src={article.image}
+                  alt=""
+                  className="w-full h-40 object-cover group-hover:scale-[1.02] transition-transform duration-200"
+                />
               ) : (
-                <div className="w-full h-44 bg-teal-50 flex items-center justify-center">
-                  <BookOpen className="w-10 h-10 text-[#06555A]/40" />
+                <div className="w-full h-40 bg-[#d0eaeb] flex items-center justify-center">
+                  <BookOpen className="w-10 h-10 text-[#3D8F8F]/50" />
                 </div>
               )}
-              <div className="p-5 flex-1 flex flex-col">
-                <h2 className="font-extrabold text-slate-900 text-base leading-snug line-clamp-2 mb-2 group-hover:text-[#06555A] transition-colors">
+              <div className="p-4 flex-1 flex flex-col">
+                <h2 className="font-bold text-gray-900 text-sm leading-snug line-clamp-2 mb-2 group-hover:text-[#3D8F8F] transition-colors">
                   {article.title}
                 </h2>
                 {article.description && (
-                  <p className="text-slate-600 text-xs line-clamp-2 mb-4 flex-1 leading-relaxed">
+                  <p className="text-gray-500 text-xs line-clamp-2 mb-3 flex-1">
                     {article.description}
                   </p>
                 )}
-                <div className="flex items-center justify-between mt-auto pt-3 border-t border-slate-100/80 text-slate-500 text-xs font-semibold">
+                <div className="flex items-center gap-3 mt-auto pt-2 border-t border-gray-50">
                   {article.source && (
-                    <span className="flex items-center gap-1">
-                      <Globe className="w-3.5 h-3.5 text-[#06555A]" />
+                    <span className="flex items-center gap-1 text-xs text-gray-400">
+                      <Globe className="w-3 h-3" />
                       {article.source}
                     </span>
                   )}
                   {article.publishedAt && (
-                    <span className="flex items-center gap-1 text-slate-400">
-                      <Clock className="w-3.5 h-3.5" />
-                      {new Date(article.publishedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+                    <span className="flex items-center gap-1 text-xs text-gray-400">
+                      <Clock className="w-3 h-3" />
+                      {new Date(article.publishedAt).toLocaleDateString()}
                     </span>
                   )}
                 </div>

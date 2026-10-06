@@ -1692,21 +1692,21 @@ export default function TalkToAI() {
   // ── Render ────────────────────────────────────────────────────────────────
   return (
     <DashboardLayout>
-      <div className="w-full">
-        <div className="max-w-5xl mx-auto">
+      <div className="min-h-screen bg-gradient-to-br from-[#06555A]/10 via-white to-[#6FB3B8]/10 p-4 md:p-6">
+        <div className="max-w-4xl mx-auto">
 
           {/* ══ SAVED CHATS MODAL ══════════════════════════════════════════ */}
           {showSavedChats && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md">
-              <div className="glass-card-light rounded-3xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col overflow-hidden border border-white/80">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+              <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100/80">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-[#06555A]" />
-                    <h2 className="text-lg font-bold text-slate-900">Saved Conversations</h2>
+                    <h2 className="text-lg font-bold text-gray-800">Saved Conversations</h2>
                   </div>
                   <button onClick={() => setShowSavedChats(false)}
-                    className="p-1.5 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition">
+                    className="p-1.5 rounded-xl hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -1716,27 +1716,27 @@ export default function TalkToAI() {
                   {loadingSaved ? (
                     <div className="flex flex-col items-center py-12 gap-3">
                       <RefreshCw className="w-6 h-6 text-[#06555A] animate-spin" />
-                      <p className="text-sm text-slate-500">Loading saved chats…</p>
+                      <p className="text-sm text-gray-500">Loading saved chats…</p>
                     </div>
                   ) : savedChatsList.length === 0 ? (
                     <div className="flex flex-col items-center py-12 gap-3 text-center">
-                      <BookOpen className="w-10 h-10 text-slate-300" />
-                      <p className="text-slate-600 font-medium">No saved conversations yet</p>
-                      <p className="text-xs text-slate-400">Start a chat and tap <strong>Save Chat</strong> to save your progress.</p>
+                      <BookOpen className="w-10 h-10 text-gray-200" />
+                      <p className="text-gray-500 font-medium">No saved conversations yet</p>
+                      <p className="text-xs text-gray-400">Start a chat and tap <strong>Save Chat</strong> to save your progress.</p>
                     </div>
                   ) : (
                     savedChatsList.map(chat => (
                       <div key={chat._id}
-                        className="flex items-start gap-3 bg-white/70 hover:bg-white/90 border border-white/90 rounded-2xl p-4 transition shadow-sm hover:shadow-md group">
+                        className="flex items-start gap-3 bg-gray-50 hover:bg-[#06555A]/5 border border-gray-200 hover:border-[#06555A]/30 rounded-2xl p-4 transition group">
                         {/* Info */}
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-slate-900 truncate text-sm">{chat.title}</p>
+                          <p className="font-semibold text-gray-800 truncate text-sm">{chat.title}</p>
                           {(chat.topic || chat.situation) && (
-                            <p className="text-xs text-slate-500 truncate mt-0.5">
+                            <p className="text-xs text-gray-500 truncate mt-0.5">
                               {chat.situation ? <><MapPin className="w-3 h-3 inline mr-0.5" />{chat.situation}</> : <>📌 {chat.topic}</>}
                             </p>
                           )}
-                          <p className="text-xs text-slate-400 mt-1 flex items-center gap-1">
+                          <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
                             <Clock className="w-3 h-3" />
                             {new Date(chat.updatedAt).toLocaleDateString(undefined, { day:"numeric", month:"short", year:"numeric" })}
                             &nbsp;·&nbsp;{chat.personaName} ({chat.gender})
@@ -1746,12 +1746,12 @@ export default function TalkToAI() {
                         <div className="flex items-center gap-2 flex-shrink-0">
                           <button
                             onClick={() => resumeSavedChat(chat._id)}
-                            className="flex items-center gap-1 text-xs font-semibold text-white bg-slate-950 hover:bg-slate-800 px-3.5 py-1.5 rounded-full transition shadow">
+                            className="flex items-center gap-1 text-xs font-semibold text-white bg-[#06555A] hover:bg-[#054a4e] px-3 py-1.5 rounded-xl transition">
                             Continue
                           </button>
                           <button
                             onClick={() => deleteSavedChat(chat._id)}
-                            className="p-1.5 rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-50 transition">
+                            className="p-1.5 rounded-xl text-gray-400 hover:text-red-500 hover:bg-red-50 transition">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
@@ -1765,21 +1765,21 @@ export default function TalkToAI() {
 
           {/* ══ SAVE CHAT MODAL ════════════════════════════════════════════════ */}
           {showSaveModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md">
-              <div className="glass-card-light rounded-3xl shadow-2xl w-full max-w-sm p-6 border border-white/80">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+              <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6">
                 {saveSuccess ? (
                   <div className="flex flex-col items-center gap-3 py-4">
-                    <CheckCircle className="w-10 h-10 text-emerald-500" />
-                    <p className="font-bold text-slate-900">Chat saved!</p>
-                    <p className="text-sm text-slate-500">You can continue it any time from Saved Chats.</p>
+                    <CheckCircle className="w-10 h-10 text-green-500" />
+                    <p className="font-bold text-gray-800">Chat saved!</p>
+                    <p className="text-sm text-gray-500">You can continue it any time from Saved Chats.</p>
                   </div>
                 ) : (
                   <>
                     <div className="flex items-center gap-2 mb-4">
                       <BookmarkPlus className="w-5 h-5 text-[#06555A]" />
-                      <h2 className="text-lg font-bold text-slate-900">Save this conversation</h2>
+                      <h2 className="text-lg font-bold text-gray-800">Save this conversation</h2>
                     </div>
-                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Give it a name</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Give it a name</label>
                     <input
                       autoFocus
                       type="text"
@@ -1787,17 +1787,17 @@ export default function TalkToAI() {
                       onChange={e => setSaveTitle(e.target.value)}
                       onKeyDown={e => e.key === "Enter" && saveNewChat()}
                       placeholder={finalSituation ? `Scene: ${finalSituation}` : finalTopic ? `Topic: ${finalTopic}` : "My conversation"}
-                      className="w-full glass-input rounded-2xl px-4 py-2.5 text-slate-900 text-sm mb-4"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-gray-800 focus:outline-none focus:border-[#06555A] text-sm mb-4"
                     />
                     <div className="flex gap-2">
                       <button onClick={() => setShowSaveModal(false)}
-                        className="flex-1 py-2.5 rounded-full border border-slate-200 text-slate-600 font-semibold hover:bg-slate-100 text-sm transition">
+                        className="flex-1 py-2.5 rounded-xl border-2 border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 text-sm transition">
                         Cancel
                       </button>
                       <button
                         onClick={saveNewChat}
                         disabled={!saveTitle.trim() || savingChat}
-                        className="flex-1 py-2.5 rounded-full bg-slate-950 text-white font-semibold hover:bg-slate-800 text-sm transition disabled:opacity-50 flex items-center justify-center gap-2 shadow">
+                        className="flex-1 py-2.5 rounded-xl bg-[#06555A] text-white font-semibold hover:bg-[#054a4e] text-sm transition disabled:opacity-50 flex items-center justify-center gap-2">
                         {savingChat ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                         Save
                       </button>
@@ -1808,56 +1808,53 @@ export default function TalkToAI() {
             </div>
           )}
 
-          {/* ── Header ── */}
+          {/* ── Header ─────────────────────────────────────────────────────── */}
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-2.5 tracking-tight">
-                <span className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-[#06555A] to-[#0A7A82] text-white flex items-center justify-center shadow">
-                  <MessageCircle className="w-5 h-5" />
-                </span>
-                Talk to AI
+              <h1 className="text-3xl font-bold text-[#06555A] flex items-center gap-2">
+                <MessageCircle className="w-8 h-8" /> Talk to AI
               </h1>
-              <p className="text-slate-600 text-xs sm:text-sm mt-1">Live, natural voice conversations with intelligent pronunciation feedback</p>
+              <p className="text-gray-500 mt-1">Practice conversations with your AI language partner</p>
             </div>
             {stage === "chat" && (
               <button onClick={resetConversation}
-                className="flex items-center gap-2 px-4 py-2 glass-pill text-slate-800 rounded-full hover:bg-white transition font-semibold text-xs sm:text-sm shadow-sm">
-                <RotateCcw className="w-3.5 h-3.5 text-[#06555A]" /> New Chat
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-[#06555A]/30 text-[#06555A] rounded-xl hover:bg-[#06555A]/5 transition font-medium text-sm">
+                <RotateCcw className="w-4 h-4" /> New Chat
               </button>
             )}
           </div>
 
           {/* ══ STAGE 1: MODEL SELECTION ════════════════════════════════════ */}
           {stage === "select-model" && (
-            <div className="glass-card-light rounded-3xl p-6 sm:p-10">
+            <div className="bg-white rounded-3xl shadow-xl p-8">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Choose Your AI Partner</h2>
+                <h2 className="text-2xl font-bold text-gray-800">Choose Your AI Partner</h2>
                 <button
                   onClick={openSavedChatsPanel}
-                  className="flex items-center gap-2 px-4 py-2 glass-pill hover:bg-white text-slate-800 rounded-full transition text-xs font-bold shadow-sm">
-                  <BookOpen className="w-3.5 h-3.5 text-[#06555A]" /> Saved Chats
+                  className="flex items-center gap-2 px-3 py-2 bg-[#06555A]/10 hover:bg-[#06555A]/20 text-[#06555A] rounded-xl transition text-sm font-semibold">
+                  <BookOpen className="w-4 h-4" /> Saved Chats
                 </button>
               </div>
-              <p className="text-slate-600 text-sm mb-8">Select the AI tutor persona best suited for your speaking goals</p>
+              <p className="text-center text-gray-500 mb-8">Select the AI persona you want to practice with</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Alex */}
                 <button onClick={() => handleModelSelect("male")}
-                  className="group relative bg-white/70 hover:bg-white/95 border border-white/80 hover:border-sky-300 rounded-3xl p-6 flex flex-col items-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                  <div className="w-44 h-44 mb-3"><Lottie animationData={maleAnimation} loop className="w-full h-full" /></div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-1">Alex</h3>
-                  <p className="text-slate-600 text-xs sm:text-sm text-center">Confident &amp; engaging. Perfect for business &amp; structured practice.</p>
-                  <div className="mt-5 flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-950 text-white font-semibold text-xs group-hover:gap-2.5 transition-all shadow">
-                    Choose Alex <ChevronRight className="w-3.5 h-3.5" />
+                  className="group relative bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-transparent hover:border-blue-400 rounded-3xl p-6 flex flex-col items-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                  <div className="w-48 h-48 mb-4"><Lottie animationData={maleAnimation} loop className="w-full h-full" /></div>
+                  <h3 className="text-xl font-bold text-blue-700 mb-1">Alex</h3>
+                  <p className="text-blue-600 text-sm text-center">Confident &amp; engaging. Perfect for structured practice.</p>
+                  <div className="mt-4 flex items-center gap-2 text-blue-500 font-semibold text-sm group-hover:gap-3 transition-all">
+                    Choose Alex <ChevronRight className="w-4 h-4" />
                   </div>
                 </button>
                 {/* Aria */}
                 <button onClick={() => handleModelSelect("female")}
-                  className="group relative bg-white/70 hover:bg-white/95 border border-white/80 hover:border-pink-300 rounded-3xl p-6 flex flex-col items-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                  <div className="w-44 h-44 mb-3"><Lottie animationData={femaleAnimation} loop className="w-full h-full" /></div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-1">Aria</h3>
-                  <p className="text-slate-600 text-xs sm:text-sm text-center">Warm &amp; encouraging. Great for casual conversation &amp; daily idioms.</p>
-                  <div className="mt-5 flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-950 text-white font-semibold text-xs group-hover:gap-2.5 transition-all shadow">
-                    Choose Aria <ChevronRight className="w-3.5 h-3.5" />
+                  className="group relative bg-gradient-to-br from-pink-50 to-rose-100 border-2 border-transparent hover:border-pink-400 rounded-3xl p-6 flex flex-col items-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                  <div className="w-48 h-48 mb-4"><Lottie animationData={femaleAnimation} loop className="w-full h-full" /></div>
+                  <h3 className="text-xl font-bold text-pink-700 mb-1">Aria</h3>
+                  <p className="text-pink-600 text-sm text-center">Warm &amp; encouraging. Great for relaxed conversations.</p>
+                  <div className="mt-4 flex items-center gap-2 text-pink-500 font-semibold text-sm group-hover:gap-3 transition-all">
+                    Choose Aria <ChevronRight className="w-4 h-4" />
                   </div>
                 </button>
               </div>
@@ -1866,42 +1863,36 @@ export default function TalkToAI() {
 
           {/* ══ STAGE 2: TOPIC SELECTION ════════════════════════════════════ */}
           {stage === "select-topic" && (
-            <div className="glass-card-light rounded-3xl p-6 sm:p-10 max-w-2xl mx-auto">
-              <div className="flex items-center justify-center mb-4">
+            <div className="bg-white rounded-3xl shadow-xl p-8 max-w-2xl mx-auto">
+              <div className="flex items-center justify-center mb-6">
                 <div className="w-24 h-24">
                   <Lottie animationData={isFemale ? femaleAnimation : maleAnimation} loop className="w-full h-full" />
                 </div>
               </div>
-              <h2 className="text-2xl font-extrabold text-center text-slate-900 mb-1">
+              <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
                 Hi {user?.name?.split(" ")[0]}! I&apos;m {personaName} 👋
               </h2>
-              <p className="text-center text-slate-600 text-xs sm:text-sm mb-8">How would you like to guide today&apos;s conversation?</p>
+              <p className="text-center text-gray-500 mb-8">How would you like to choose today&apos;s topic?</p>
 
               {!topicMode && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <button onClick={() => handleTopicModeSelect("user")}
-                    className="bg-white/70 hover:bg-white/95 border border-white/80 rounded-2xl p-5 flex flex-col items-center gap-3 transition-all hover:shadow-lg hover:-translate-y-0.5">
-                    <div className="w-12 h-12 rounded-2xl bg-teal-50 text-[#06555A] flex items-center justify-center shadow-sm">
-                      <User className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-bold text-slate-900 text-base">I&apos;ll Choose</h3>
-                    <p className="text-slate-500 text-xs text-center">Pick any custom topic</p>
+                    className="bg-gradient-to-br from-[#06555A]/10 to-[#6FB3B8]/20 border-2 border-[#06555A]/20 hover:border-[#06555A] rounded-2xl p-6 flex flex-col items-center gap-3 transition-all hover:shadow-lg">
+                    <User className="w-10 h-10 text-[#06555A]" />
+                    <h3 className="font-bold text-[#06555A] text-lg">I&apos;ll Choose</h3>
+                    <p className="text-gray-500 text-sm text-center">Pick your own topic to discuss</p>
                   </button>
                   <button onClick={() => handleTopicModeSelect("ai")}
-                    className="bg-white/70 hover:bg-white/95 border border-white/80 rounded-2xl p-5 flex flex-col items-center gap-3 transition-all hover:shadow-lg hover:-translate-y-0.5">
-                    <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shadow-sm">
-                      <Sparkles className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-bold text-slate-900 text-base">Let AI Choose</h3>
-                    <p className="text-slate-500 text-xs text-center">Get a fun surprise topic</p>
+                    className="bg-gradient-to-br from-purple-50 to-violet-100 border-2 border-purple-200 hover:border-purple-400 rounded-2xl p-6 flex flex-col items-center gap-3 transition-all hover:shadow-lg">
+                    <Sparkles className="w-10 h-10 text-purple-500" />
+                    <h3 className="font-bold text-purple-700 text-lg">Let AI Choose</h3>
+                    <p className="text-gray-500 text-sm text-center">Get a fun surprise topic</p>
                   </button>
                   <button onClick={() => handleTopicModeSelect("situation")}
-                    className="bg-white/70 hover:bg-white/95 border border-white/80 rounded-2xl p-5 flex flex-col items-center gap-3 transition-all hover:shadow-lg hover:-translate-y-0.5">
-                    <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shadow-sm">
-                      <MapPin className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-bold text-slate-900 text-base">Real Scene</h3>
-                    <p className="text-slate-500 text-xs text-center">Practise real-world scenarios</p>
+                    className="bg-gradient-to-br from-orange-50 to-amber-100 border-2 border-orange-200 hover:border-orange-400 rounded-2xl p-6 flex flex-col items-center gap-3 transition-all hover:shadow-lg">
+                    <MapPin className="w-10 h-10 text-orange-500" />
+                    <h3 className="font-bold text-orange-700 text-lg">Real-Life Scene</h3>
+                    <p className="text-gray-500 text-sm text-center">Practise a real situation you&apos;ll face</p>
                   </button>
                 </div>
               )}
@@ -1909,16 +1900,16 @@ export default function TalkToAI() {
               {/* User picks topic */}
               {topicMode === "user" && (
                 <div className="mt-2">
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">What would you like to talk about?</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">What would you like to talk about?</label>
                   <input type="text" value={userTopic} onChange={e => setUserTopic(e.target.value)}
                     onKeyDown={e => e.key === "Enter" && userTopic.trim() && startChat(userTopic)}
-                    placeholder="e.g. Travel, Food, Movies, Technology, Space exploration…"
-                    className="w-full glass-input rounded-2xl px-4 py-3 text-slate-900 text-sm mb-4" />
+                    placeholder="e.g. Travel, Food, Movies, Technology…"
+                    className="w-full border-2 border-[#06555A]/30 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-[#06555A] mb-4" />
                   <div className="flex gap-3">
                     <button onClick={() => setTopicMode(null)}
-                      className="flex-1 py-3 rounded-full border border-slate-200 text-slate-600 font-semibold hover:bg-white text-sm transition">Back</button>
+                      className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition">Back</button>
                     <button onClick={() => startChat(userTopic)} disabled={!userTopic.trim() || loading}
-                      className="flex-1 py-3 rounded-full bg-slate-950 text-white font-semibold hover:bg-slate-800 transition disabled:opacity-50 flex items-center justify-center gap-2 text-sm shadow">
+                      className="flex-1 py-3 rounded-xl bg-[#06555A] text-white font-semibold hover:bg-[#054a4e] transition disabled:opacity-50 flex items-center justify-center gap-2">
                       {loading ? <><RefreshCw className="w-4 h-4 animate-spin" /> Starting…</> : <><Mic className="w-4 h-4" /> Start Talking</>}
                     </button>
                   </div>
@@ -1931,29 +1922,29 @@ export default function TalkToAI() {
                   {fetchingTopic ? (
                     <div className="flex flex-col items-center gap-3 py-8">
                       <RefreshCw className="w-8 h-8 text-purple-500 animate-spin" />
-                      <p className="text-slate-500 text-sm">Finding an engaging topic for you…</p>
+                      <p className="text-gray-500">Finding a great topic for you…</p>
                     </div>
                   ) : suggestedTopic ? (
-                    <div className="bg-purple-50/80 border border-purple-200/80 rounded-2xl p-5 mb-4 shadow-sm">
+                    <div className="bg-purple-50 border-2 border-purple-200 rounded-2xl p-5 mb-4">
                       <div className="flex items-start gap-3">
-                        <Lightbulb className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                        <Lightbulb className="w-6 h-6 text-purple-500 flex-shrink-0 mt-0.5" />
                         <div>
-                          <h3 className="font-bold text-purple-900 text-base">{suggestedTopic.topic}</h3>
-                          <p className="text-purple-700 text-xs mt-1">{suggestedTopic.description}</p>
+                          <h3 className="font-bold text-purple-800 text-lg">{suggestedTopic.topic}</h3>
+                          <p className="text-purple-600 text-sm mt-1">{suggestedTopic.description}</p>
                         </div>
                       </div>
                       <button onClick={fetchAITopic}
-                        className="mt-3 text-xs font-semibold text-purple-600 hover:text-purple-800 flex items-center gap-1 transition">
+                        className="mt-3 text-sm text-purple-500 hover:text-purple-700 flex items-center gap-1 transition">
                         <RefreshCw className="w-3 h-3" /> Try another topic
                       </button>
                     </div>
                   ) : null}
                   <div className="flex gap-3">
                     <button onClick={() => setTopicMode(null)}
-                      className="flex-1 py-3 rounded-full border border-slate-200 text-slate-600 font-semibold hover:bg-white text-sm transition">Back</button>
+                      className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition">Back</button>
                     <button onClick={() => startChat(suggestedTopic?.topic || "", true)}
                       disabled={fetchingTopic || loading}
-                      className="flex-1 py-3 rounded-full bg-slate-950 text-white font-semibold hover:bg-slate-800 transition disabled:opacity-50 flex items-center justify-center gap-2 text-sm shadow">
+                      className="flex-1 py-3 rounded-xl bg-purple-600 text-white font-semibold hover:bg-purple-700 transition disabled:opacity-50 flex items-center justify-center gap-2">
                       {loading ? <><RefreshCw className="w-4 h-4 animate-spin" /> Starting…</> : <><Sparkles className="w-4 h-4" /> Start with this Topic</>}
                     </button>
                   </div>
@@ -1963,27 +1954,27 @@ export default function TalkToAI() {
               {/* Situation roleplay */}
               {topicMode === "situation" && (
                 <div className="mt-2">
-                  <div className="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-4 mb-4 shadow-sm">
+                  <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-4 mb-4">
                     <div className="flex items-start gap-3 mb-3">
-                      <MapPin className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                      <MapPin className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-sm font-bold text-amber-900">Describe your real-life situation</p>
-                        <p className="text-xs text-amber-700 mt-0.5">
-                          e.g. &quot;I&apos;m checking into a boutique hotel&quot;, &quot;Ordering coffee at a busy café&quot;,
-                          &quot;Job interview for a tech role&quot;
+                        <p className="text-sm font-bold text-orange-800">Describe your real-life situation</p>
+                        <p className="text-xs text-orange-600 mt-0.5">
+                          e.g. &quot;I&apos;m going to the market&quot;, &quot;I&apos;m ordering food at a restaurant&quot;,
+                          &quot;I need to ask for directions&quot;, &quot;I&apos;m at a job interview&quot;
                         </p>
                       </div>
                     </div>
                     <input type="text" value={userSituation} onChange={e => setUserSituation(e.target.value)}
                       onKeyDown={e => e.key === "Enter" && userSituation.trim() && startChat("", false, userSituation)}
                       placeholder="Describe where you are or what you need to do…"
-                      className="w-full glass-input rounded-2xl px-4 py-3 text-slate-900 text-sm" />
+                      className="w-full border-2 border-orange-300 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-orange-500 bg-white text-sm" />
                   </div>
                   <div className="flex gap-3">
                     <button onClick={() => setTopicMode(null)}
-                      className="flex-1 py-3 rounded-full border border-slate-200 text-slate-600 font-semibold hover:bg-white text-sm transition">Back</button>
+                      className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition">Back</button>
                     <button onClick={() => startChat("", false, userSituation)} disabled={!userSituation.trim() || loading}
-                      className="flex-1 py-3 rounded-full bg-slate-950 text-white font-semibold hover:bg-slate-800 transition disabled:opacity-50 flex items-center justify-center gap-2 text-sm shadow">
+                      className="flex-1 py-3 rounded-xl bg-orange-500 text-white font-semibold hover:bg-orange-600 transition disabled:opacity-50 flex items-center justify-center gap-2">
                       {loading ? <><RefreshCw className="w-4 h-4 animate-spin" /> Starting…</> : <><MapPin className="w-4 h-4" /> Start Roleplay</>}
                     </button>
                   </div>
@@ -1997,39 +1988,39 @@ export default function TalkToAI() {
             <div className="flex flex-col gap-4">
 
               {/* ── Top control bar ── */}
-              <div className="flex items-center justify-between glass-card-light rounded-2xl px-4 py-2.5 gap-2 flex-wrap shadow-md">
+              <div className="flex items-center justify-between bg-white rounded-2xl shadow px-4 py-2.5 gap-2 flex-wrap">
                 {/* AI Voice */}
                 <div className="flex items-center gap-2">
-                  <Volume2 className="w-4 h-4 text-slate-500" />
-                  <span className="text-xs font-bold text-slate-600 uppercase tracking-wider hidden sm:inline">AI Voice</span>
+                  <Volume2 className="w-4 h-4 text-gray-400" />
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide hidden sm:inline">AI Voice</span>
                   <button onClick={() => { setAutoSpeak(p => !p); if (aiSpeaking) stopSpeaking(); }}
-                    className={`relative w-10 h-5 rounded-full transition-colors ${autoSpeak ? "bg-slate-950" : "bg-slate-300"}`}>
+                    className={`relative w-10 h-5 rounded-full transition-colors ${autoSpeak ? "bg-[#06555A]" : "bg-gray-300"}`}>
                     <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${autoSpeak ? "translate-x-5" : "translate-x-0"}`} />
                   </button>
                 </div>
 
                 {/* Topic badge */}
                 {finalSituation ? (
-                  <span className="text-xs font-semibold text-amber-800 bg-amber-100/80 border border-amber-200 px-3 py-1 rounded-full truncate max-w-[160px] flex items-center gap-1">
+                  <span className="text-xs font-semibold text-orange-700 bg-orange-100 px-3 py-1 rounded-full truncate max-w-[160px] flex items-center gap-1">
                     <MapPin className="w-3 h-3 flex-shrink-0" /> {finalSituation}
                   </span>
                 ) : finalTopic ? (
-                  <span className="text-xs font-semibold text-teal-800 bg-teal-100/80 border border-teal-200 px-3 py-1 rounded-full truncate max-w-[150px]">
+                  <span className="text-xs font-semibold text-[#06555A] bg-[#06555A]/10 px-3 py-1 rounded-full truncate max-w-[150px]">
                     📌 {finalTopic}
                   </span>
                 ) : null}
 
                 {/* Hands-Free */}
                 <div className="flex items-center gap-2">
-                  <Radio className="w-4 h-4 text-slate-500" />
-                  <span className="text-xs font-bold text-slate-600 uppercase tracking-wider hidden sm:inline">Hands-Free</span>
+                  <Radio className="w-4 h-4 text-gray-400" />
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide hidden sm:inline">Hands-Free</span>
                   <button onClick={() => setHandsFree(p => !p)}
                     title="Auto-listen after AI speaks"
-                    className={`relative w-10 h-5 rounded-full transition-colors ${handsFree ? "bg-emerald-500" : "bg-slate-300"}`}>
+                    className={`relative w-10 h-5 rounded-full transition-colors ${handsFree ? "bg-emerald-500" : "bg-gray-300"}`}>
                     <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${handsFree ? "translate-x-5" : "translate-x-0"}`} />
                   </button>
                   {handsFree && (
-                    <span className="hidden sm:flex items-center gap-1 text-xs text-emerald-700 font-bold bg-emerald-100/80 px-2 py-0.5 rounded-full border border-emerald-200">
+                    <span className="hidden sm:flex items-center gap-1 text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">
                       <Zap className="w-3 h-3" /> Active
                     </span>
                   )}
@@ -2041,12 +2032,12 @@ export default function TalkToAI() {
                     onClick={updateSavedChat}
                     disabled={savingChat}
                     title="Update saved progress"
-                    className={`flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition ${
+                    className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl transition ${
                       saveSuccess
-                        ? "bg-emerald-100 text-emerald-700 border border-emerald-300"
-                        : "glass-pill text-slate-800 hover:bg-white"
-                    } disabled:opacity-50 shadow-sm`}>
-                    {savingChat ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : saveSuccess ? <CheckCircle className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5 text-[#06555A]" />}
+                        ? "bg-green-100 text-green-700 border border-green-200"
+                        : "bg-[#06555A]/10 text-[#06555A] hover:bg-[#06555A]/20"
+                    } disabled:opacity-50`}>
+                    {savingChat ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : saveSuccess ? <CheckCircle className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
                     <span className="hidden sm:inline">{saveSuccess ? "Saved!" : "Update"}</span>
                   </button>
                 ) : (
@@ -2054,15 +2045,15 @@ export default function TalkToAI() {
                     onClick={() => { setSaveTitle(finalSituation ? `Scene: ${finalSituation}` : finalTopic ? `Topic: ${finalTopic}` : ""); setShowSaveModal(true); }}
                     disabled={messages.length === 0}
                     title="Save this conversation"
-                    className="flex items-center gap-1.5 text-xs font-bold text-slate-800 glass-pill hover:bg-white px-3 py-1.5 rounded-full transition disabled:opacity-40 shadow-sm">
-                    <BookmarkPlus className="w-3.5 h-3.5 text-[#06555A]" />
+                    className="flex items-center gap-1.5 text-xs font-semibold text-[#06555A] bg-[#06555A]/10 hover:bg-[#06555A]/20 px-3 py-1.5 rounded-xl transition disabled:opacity-40">
+                    <BookmarkPlus className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Save Chat</span>
                   </button>
                 )}
 
                 {/* Keyboard */}
                 <button onClick={() => setShowTextInput(p => !p)}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition">
+                  className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-700 transition">
                   <Keyboard className="w-4 h-4" />
                   <span className="hidden sm:inline">{showTextInput ? "Hide keyboard" : "Keyboard"}</span>
                 </button>
@@ -2071,10 +2062,10 @@ export default function TalkToAI() {
                 <button
                   onClick={() => setVoiceOnlyMode(p => !p)}
                   title={voiceOnlyMode ? "Show chat" : "Hide chat (voice only)"}
-                  className={`flex items-center gap-1.5 text-xs font-semibold transition px-2.5 py-1.5 rounded-full ${
+                  className={`flex items-center gap-1.5 text-xs font-semibold transition px-2 py-1.5 rounded-xl ${
                     voiceOnlyMode
-                      ? "bg-slate-950 text-white"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                      ? "bg-[#06555A] text-white"
+                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
                   }`}>
                   {voiceOnlyMode ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                   <span className="hidden sm:inline">{voiceOnlyMode ? "Show chat" : "Hide chat"}</span>
@@ -2085,8 +2076,8 @@ export default function TalkToAI() {
               <div className="flex flex-row gap-2 md:gap-4" style={{ height: "calc(100vh - 310px)" }}>
 
                 {/* ── Left: Avatar + Mic Panel ── */}
-                <div className={voiceOnlyMode ? "flex-1" : "w-24 md:w-60 flex-shrink-0"}>
-                  <div className={`glass-card-light rounded-3xl shadow-xl p-3 md:p-5 flex flex-col items-center sticky top-4 ${
+                <div className={voiceOnlyMode ? "flex-1" : "w-20 md:w-56 flex-shrink-0"}>
+                  <div className={`bg-white rounded-2xl md:rounded-3xl shadow-lg p-2 md:p-4 flex flex-col items-center sticky top-4 ${
                     voiceOnlyMode ? "h-full justify-center gap-6" : ""
                   }`}>
 
@@ -2191,19 +2182,19 @@ export default function TalkToAI() {
 
                 {/* ── Right: Chat Messages Panel ── */}
                 {!voiceOnlyMode && (
-                <div className="flex-1 glass-card-light rounded-3xl shadow-xl flex flex-col overflow-hidden min-h-0 border border-white/80">
-                  <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 min-h-0">
+                <div className="flex-1 bg-white rounded-3xl shadow-lg flex flex-col overflow-hidden min-h-0">
+                  <div className="flex-1 overflow-y-auto p-4 md:p-5 space-y-4 min-h-0">
                     {messages.map((msg, idx) => (
                       <div key={idx} className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white shadow-sm ${
-                          msg.role === "user" ? "bg-slate-950" : isFemale ? "bg-pink-500" : "bg-[#06555A]"}`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white ${
+                          msg.role === "user" ? "bg-[#06555A]" : isFemale ? "bg-pink-400" : "bg-blue-400"}`}>
                           {msg.role === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                         </div>
-                        <div className={`max-w-[80%] space-y-1.5 flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}>
-                          <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm ${
+                        <div className={`max-w-[78%] space-y-1.5 flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}>
+                          <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
                             msg.role === "user"
-                              ? "bg-gradient-to-r from-[#06555A] to-[#0A7A82] text-white rounded-tr-sm font-medium"
-                              : "bg-white/85 text-slate-800 border border-white/90 rounded-tl-sm"}`}>
+                              ? "bg-[#06555A] text-white rounded-tr-sm"
+                              : "bg-gray-100 text-gray-800 rounded-tl-sm"}`}>
                             {/* Typewriter for the latest AI message — but NOT
                                  while it is being streamed in real-time,
                                  because the stream IS the animation. */}
@@ -2219,13 +2210,13 @@ export default function TalkToAI() {
                     {/* Thinking indicator */}
                     {loading && (
                       <div className="flex gap-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white shadow-sm ${isFemale ? "bg-pink-500" : "bg-[#06555A]"}`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${isFemale ? "bg-pink-400" : "bg-blue-400"}`}>
                           <Bot className="w-4 h-4" />
                         </div>
-                        <div className="bg-white/80 border border-white rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1.5 h-11 shadow-sm">
-                          <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                          <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                          <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                        <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1.5 h-11">
+                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
                         </div>
                       </div>
                     )}
@@ -2233,14 +2224,14 @@ export default function TalkToAI() {
                     {/* Recording indicator — shows live interim transcript */}
                     {isListening && (
                       <div className="flex gap-3 flex-row-reverse">
-                        <div className="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center text-white flex-shrink-0 shadow-sm">
+                        <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white flex-shrink-0">
                           <Mic className="w-4 h-4" />
                         </div>
-                        <div className="max-w-[80%] bg-rose-50/90 border border-rose-200 px-4 py-3 rounded-2xl rounded-tr-sm text-sm flex items-center gap-2 shadow-sm">
-                          <span className="w-2 h-2 bg-rose-500 rounded-full animate-pulse flex-shrink-0" />
+                        <div className="max-w-[78%] bg-red-50 border-2 border-red-200 px-4 py-3 rounded-2xl rounded-tr-sm text-sm flex items-center gap-2">
+                          <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse flex-shrink-0" />
                           {interimTranscript
-                            ? <span className="text-slate-900 font-medium">{interimTranscript}<span className="animate-pulse">|</span></span>
-                            : <span className="text-rose-700 italic">Listening… speak naturally to reply</span>
+                            ? <span className="text-gray-800">{interimTranscript}<span className="animate-pulse">|</span></span>
+                            : <span className="text-red-700 italic">Listening… stop talking to send</span>
                           }
                         </div>
                       </div>
@@ -2249,11 +2240,11 @@ export default function TalkToAI() {
                     {/* Transcribing indicator */}
                     {isTranscribing && (
                       <div className="flex gap-3 flex-row-reverse">
-                        <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-white flex-shrink-0 shadow-sm">
+                        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white flex-shrink-0">
                           <Mic className="w-4 h-4" />
                         </div>
-                        <div className="max-w-[80%] bg-sky-50/90 border border-sky-200 px-4 py-3 rounded-2xl rounded-tr-sm text-sm text-sky-700 italic flex items-center gap-2 shadow-sm">
-                          <span className="w-2 h-2 bg-sky-500 rounded-full animate-ping" />
+                        <div className="max-w-[78%] bg-blue-50 border-2 border-blue-200 px-4 py-3 rounded-2xl rounded-tr-sm text-sm text-blue-700 italic flex items-center gap-2">
+                          <span className="w-2 h-2 bg-blue-500 rounded-full animate-ping" />
                           Understanding your voice…
                         </div>
                       </div>
@@ -2263,7 +2254,7 @@ export default function TalkToAI() {
 
                   {/* Text input (optional) */}
                   {showTextInput && (
-                    <div className="border-t border-slate-100/80 p-3 md:p-4 bg-white/40 backdrop-blur-md">
+                    <div className="border-t border-gray-100 p-3 md:p-4">
                       <div className="flex gap-2">
                         <input
                           ref={inputRef}
@@ -2297,7 +2288,7 @@ export default function TalkToAI() {
                           }}
                           placeholder={`Type to ${personaName}…`}
                           disabled={loading || isListening || isStreaming}
-                          className="flex-1 glass-input rounded-2xl px-4 py-2.5 text-slate-900 placeholder-slate-400 text-sm disabled:opacity-50"
+                          className="flex-1 border-2 border-gray-200 rounded-xl px-4 py-2.5 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#06555A] text-sm disabled:opacity-50"
                         />
                         <button
                           onClick={() => {
@@ -2305,7 +2296,7 @@ export default function TalkToAI() {
                             sendMessageText(input.trim());
                           }}
                           disabled={!input.trim() || loading || isStreaming}
-                          className={`p-2.5 rounded-2xl text-white transition-all shadow ${isFemale ? "bg-pink-500 hover:bg-pink-600" : "bg-slate-950 hover:bg-slate-800"} disabled:opacity-40`}>
+                          className={`p-2.5 rounded-xl text-white transition-all ${isFemale ? "bg-pink-500 hover:bg-pink-600" : "bg-[#06555A] hover:bg-[#054a4e]"} disabled:opacity-40`}>
                           <Send className="w-5 h-5" />
                         </button>
                       </div>

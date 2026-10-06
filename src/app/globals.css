@@ -24,19 +24,11 @@ body {
 
 /* Glassmorphism Classes */
 .glass-card-light {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.90);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.95);
   box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.6);
-}
-
-.glass-card-subtle {
-  background: rgba(255, 255, 255, 0.70);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
 .glass-card-dark {
@@ -54,19 +46,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
-.glass-input {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  transition: all 0.2s ease-in-out;
-}
-.glass-input:focus {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: #06555A;
-  box-shadow: 0 0 0 3px rgba(6, 85, 90, 0.15);
-}
-
 /* Custom modern scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -82,4 +61,3 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 116, 139, 0.7);
 }
-

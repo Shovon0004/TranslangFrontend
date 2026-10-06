@@ -138,46 +138,46 @@ export default function SettingsPage() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-2xl mx-auto px-4 py-6">
+
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-2xl bg-slate-950 text-white flex items-center justify-center shadow">
-            <Settings className="w-5 h-5" />
+          <div className="p-2 rounded-xl bg-[#d0eaeb]">
+            <Settings className="w-6 h-6 text-[#06555A]" />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Account &amp; Language Settings</h1>
-            <p className="text-xs sm:text-sm text-slate-600 mt-0.5">Customize your profile, target languages, and avatar</p>
+            <h1 className="text-2xl font-extrabold text-gray-900 leading-none">Settings</h1>
+            <p className="text-sm text-gray-400 mt-0.5">Manage your profile &amp; preferences</p>
           </div>
         </div>
 
-
-        <div className="space-y-6">
+        <div className="space-y-5">
 
           {/* ── Profile Info ─────────────────────────────── */}
-          <section className="glass-card-light rounded-3xl border border-white/80 shadow-md overflow-hidden">
-            <div className="px-6 py-4 flex items-center gap-2 border-b border-slate-100/80 bg-white/40">
-              <User className="w-4 h-4 text-[#06555A]" />
-              <span className="font-extrabold text-slate-900 text-xs uppercase tracking-wider">Account Overview</span>
+          <section className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="bg-gradient-to-r from-[#3D8F8F]/10 to-transparent px-6 py-4 flex items-center gap-2 border-b border-gray-100">
+              <User className="w-4 h-4 text-[#3D8F8F]" />
+              <span className="font-bold text-gray-800 text-sm uppercase tracking-wide">Profile Info</span>
             </div>
             <div className="px-6 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
-                { label: "Learner Name", value: user?.name },
-                { label: "Email Address", value: user?.email },
-                { label: "Account Role", value: user?.role, cap: true },
+                { label: "Full Name", value: user?.name },
+                { label: "Email", value: user?.email },
+                { label: "Role", value: user?.role, cap: true },
               ].map(({ label, value, cap }) => (
-                <div key={label} className="bg-white/70 border border-slate-100/80 rounded-2xl px-4 py-3 shadow-sm">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
-                  <p className={`text-slate-900 font-extrabold text-sm truncate ${cap ? "capitalize" : ""}`}>{value || "—"}</p>
+                <div key={label} className="bg-gray-50 rounded-xl px-4 py-3">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{label}</p>
+                  <p className={`text-gray-900 font-semibold text-sm truncate ${cap ? "capitalize" : ""}`}>{value || "—"}</p>
                 </div>
               ))}
             </div>
           </section>
 
           {/* ── Profile Picture ───────────────────────────── */}
-          <section className="glass-card-light rounded-3xl border border-white/80 shadow-md overflow-hidden">
-            <div className="px-6 py-4 flex items-center gap-2 border-b border-slate-100/80 bg-white/40">
-              <Camera className="w-4 h-4 text-[#06555A]" />
-              <span className="font-extrabold text-slate-900 text-xs uppercase tracking-wider">Avatar Customization</span>
+          <section className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="bg-gradient-to-r from-[#3D8F8F]/10 to-transparent px-6 py-4 flex items-center gap-2 border-b border-gray-100">
+              <Camera className="w-4 h-4 text-[#3D8F8F]" />
+              <span className="font-bold text-gray-800 text-sm uppercase tracking-wide">Profile Picture</span>
             </div>
 
             <div className="px-6 py-6 flex flex-col sm:flex-row items-center gap-6">
@@ -191,8 +191,8 @@ export default function SettingsPage() {
               >
                 <div
                   className={`w-28 h-28 rounded-full overflow-hidden border-4 ${
-                    dragOver ? "border-[#06555A]" : "border-white"
-                  } bg-gradient-to-tr from-[#06555A] to-[#0A7A82] flex items-center justify-center shadow-xl transition-all`}
+                    dragOver ? "border-[#06555A]" : "border-[#3D8F8F]/40"
+                  } bg-gradient-to-br from-[#3D8F8F] to-[#06555A] flex items-center justify-center shadow-lg transition-all`}
                 >
                   {avatarPreview ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -209,18 +209,18 @@ export default function SettingsPage() {
                 </div>
                 {/* saved badge */}
                 {avatarSaved && (
-                  <div className="absolute -bottom-1 -right-1 bg-emerald-500 rounded-full p-1 shadow-md">
+                  <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1 shadow">
                     <CheckCircle2 className="w-4 h-4 text-white" />
                   </div>
                 )}
               </div>
 
               {/* Buttons */}
-              <div className="flex-1 space-y-3 w-full text-center sm:text-left">
+              <div className="flex-1 space-y-3 w-full">
                 <div>
-                  <p className="font-extrabold text-slate-900 text-base">Update Profile Photo</p>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Upload a custom image (JPG, PNG, GIF) or instantly roll a dynamic DiceBear persona.
+                  <p className="font-semibold text-gray-800 text-sm">Change your photo</p>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    Upload a JPG, PNG or GIF — max 5 MB. You can also drag &amp; drop onto the circle.
                   </p>
                 </div>
 
@@ -232,36 +232,36 @@ export default function SettingsPage() {
                   onChange={handleFileChange}
                 />
 
-                <div className="flex flex-wrap gap-2.5 justify-center sm:justify-start">
+                <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => fileInputRef.current?.click()}
                     disabled={avatarSaving}
-                    className="flex items-center gap-2 bg-slate-950 hover:bg-slate-800 disabled:opacity-60 text-white font-bold px-5 py-2.5 rounded-full text-xs transition-all shadow-md hover:shadow-lg"
+                    className="flex items-center gap-2 bg-[#3D8F8F] hover:bg-[#06555A] disabled:opacity-60 text-white font-semibold px-4 py-2 rounded-xl text-sm transition-all shadow-sm hover:shadow"
                   >
                     {avatarSaving
                       ? <Loader2 className="w-4 h-4 animate-spin" />
                       : <Camera className="w-4 h-4" />}
-                    Upload Image
+                    Upload Photo
                   </button>
 
                   <button
                     onClick={handleReroll}
                     disabled={avatarSaving}
-                    className="flex items-center gap-2 glass-pill hover:bg-white disabled:opacity-60 text-slate-800 font-bold px-5 py-2.5 rounded-full text-xs transition-all shadow-sm"
+                    className="flex items-center gap-2 border-2 border-[#3D8F8F] hover:bg-[#d0eaeb] disabled:opacity-60 text-[#3D8F8F] font-semibold px-4 py-2 rounded-xl text-sm transition-all"
                   >
-                    <RefreshCw className="w-3.5 h-3.5 text-[#06555A]" />
-                    Random DiceBear Avatar
+                    <RefreshCw className="w-4 h-4" />
+                    Random Avatar
                   </button>
                 </div>
 
                 {uploadError && (
-                  <p className="text-xs text-rose-600 font-semibold bg-rose-50 border border-rose-200 px-3 py-2 rounded-2xl">
+                  <p className="text-xs text-red-500 font-medium bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
                     {uploadError}
                   </p>
                 )}
                 {avatarSaved && !uploadError && (
-                  <p className="text-xs text-emerald-600 font-bold flex items-center gap-1 justify-center sm:justify-start">
-                    <CheckCircle2 className="w-4 h-4" /> Avatar saved successfully!
+                  <p className="text-xs text-green-600 font-semibold flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Photo saved successfully
                   </p>
                 )}
               </div>
@@ -269,61 +269,61 @@ export default function SettingsPage() {
           </section>
 
           {/* ── XP Shop ──────────────────────────────────── */}
-          <section className="glass-card-light rounded-3xl border border-white/80 shadow-md overflow-hidden">
-            <div className="px-6 py-4 flex items-center gap-2 border-b border-slate-100/80 bg-white/40">
+          <section className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="bg-gradient-to-r from-amber-400/20 to-transparent px-6 py-4 flex items-center gap-2 border-b border-gray-100">
               <Coins className="w-4 h-4 text-amber-500" />
-              <span className="font-extrabold text-slate-900 text-xs uppercase tracking-wider">Treasury Balance</span>
+              <span className="font-bold text-gray-800 text-sm uppercase tracking-wide">XP Shop</span>
             </div>
-            <div className="px-6 py-5 flex items-center justify-between flex-wrap gap-4">
-              <div className="flex items-center gap-5">
-                <div className="flex items-center gap-2">
-                  <Coins className="w-5 h-5 text-amber-500" />
-                  <span className="text-sm font-extrabold text-slate-900">{user?.coins ?? 0} coins</span>
+            <div className="px-6 py-5 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1.5">
+                  <Coins className="w-5 h-5 text-amber-400" />
+                  <span className="text-sm font-bold text-gray-800">{user?.coins ?? 0} coins</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
-                  <span className="text-sm font-extrabold text-slate-900">{user?.xp ?? 0} XP</span>
+                <div className="flex items-center gap-1.5">
+                  <Star className="w-5 h-5 text-yellow-500" />
+                  <span className="text-sm font-bold text-gray-800">{user?.xp ?? 0} XP</span>
                 </div>
               </div>
               <Link
                 href="/shop"
-                className="flex items-center gap-2 bg-slate-950 hover:bg-slate-800 text-white font-bold px-6 py-2.5 rounded-full text-xs transition-all shadow-md hover:shadow-lg"
+                className="flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-all shadow-sm hover:shadow"
               >
-                Visit Coin Shop <ArrowRight className="w-4 h-4" />
+                Open Shop <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </section>
 
           {/* ── Language ──────────────────────────────────── */}
-          <section className="glass-card-light rounded-3xl border border-white/80 shadow-md overflow-hidden">
-            <div className="px-6 py-4 flex items-center gap-2 border-b border-slate-100/80 bg-white/40">
-              <Globe className="w-4 h-4 text-[#06555A]" />
-              <span className="font-extrabold text-slate-900 text-xs uppercase tracking-wider">Language Configuration</span>
+          <section className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="bg-gradient-to-r from-[#3D8F8F]/10 to-transparent px-6 py-4 flex items-center gap-2 border-b border-gray-100">
+              <Globe className="w-4 h-4 text-[#3D8F8F]" />
+              <span className="font-bold text-gray-800 text-sm uppercase tracking-wide">Languages</span>
             </div>
 
             <div className="px-6 py-6 space-y-6">
               {/* Native */}
               <div>
-                <p className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">
+                <p className="text-sm font-bold text-gray-700 mb-3">
                   🏠 Native Language
                   {nativeLanguage && (
-                    <span className="ml-2 text-xs font-bold text-teal-800 bg-teal-100/80 border border-teal-200 px-2.5 py-0.5 rounded-full">
+                    <span className="ml-2 text-xs font-normal text-[#3D8F8F] bg-[#d0eaeb] px-2 py-0.5 rounded-full">
                       {LANGUAGES.find((l) => l.label === nativeLanguage)?.flag} {nativeLanguage}
                     </span>
                   )}
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {LANGUAGES.map(({ label, flag }) => (
                     <button
                       key={`native-${label}`}
                       onClick={() => setNativeLanguage(label)}
-                      className={`p-3 rounded-2xl border text-xs sm:text-sm font-bold text-left transition-all flex items-center gap-2 ${
+                      className={`p-3 rounded-xl border-2 text-sm font-semibold text-left transition-all flex items-center gap-1.5 ${
                         nativeLanguage === label
-                          ? "border-slate-950 bg-slate-950 text-white shadow-md"
-                          : "border-white/80 bg-white/70 text-slate-700 hover:bg-white hover:border-slate-300"
+                          ? "border-[#3D8F8F] bg-[#d0eaeb] text-[#06555A] shadow-sm"
+                          : "border-gray-200 text-gray-600 hover:border-[#6FB3B8] hover:bg-gray-50"
                       }`}
                     >
-                      <span className="text-xl">{flag}</span>
+                      <span>{flag}</span>
                       <span className="truncate">{label}</span>
                     </button>
                   ))}
@@ -332,26 +332,26 @@ export default function SettingsPage() {
 
               {/* Learning */}
               <div>
-                <p className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">
+                <p className="text-sm font-bold text-gray-700 mb-3">
                   📚 Learning Language
                   {currentLanguage && (
-                    <span className="ml-2 text-xs font-bold text-teal-800 bg-teal-100/80 border border-teal-200 px-2.5 py-0.5 rounded-full">
+                    <span className="ml-2 text-xs font-normal text-[#3D8F8F] bg-[#d0eaeb] px-2 py-0.5 rounded-full">
                       {LANGUAGES.find((l) => l.label === currentLanguage)?.flag} {currentLanguage}
                     </span>
                   )}
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {LANGUAGES.map(({ label, flag }) => (
                     <button
                       key={`learning-${label}`}
                       onClick={() => setCurrentLanguage(label)}
-                      className={`p-3 rounded-2xl border text-xs sm:text-sm font-bold text-left transition-all flex items-center gap-2 ${
+                      className={`p-3 rounded-xl border-2 text-sm font-semibold text-left transition-all flex items-center gap-1.5 ${
                         currentLanguage === label
-                          ? "border-slate-950 bg-slate-950 text-white shadow-md"
-                          : "border-white/80 bg-white/70 text-slate-700 hover:bg-white hover:border-slate-300"
+                          ? "border-[#3D8F8F] bg-[#d0eaeb] text-[#06555A] shadow-sm"
+                          : "border-gray-200 text-gray-600 hover:border-[#6FB3B8] hover:bg-gray-50"
                       }`}
                     >
-                      <span className="text-xl">{flag}</span>
+                      <span>{flag}</span>
                       <span className="truncate">{label}</span>
                     </button>
                   ))}
@@ -361,13 +361,13 @@ export default function SettingsPage() {
               <button
                 onClick={handleSave}
                 disabled={saving || !nativeLanguage || !currentLanguage}
-                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-slate-950 hover:bg-slate-800 disabled:opacity-50 text-white font-extrabold px-8 py-3.5 rounded-full transition-all shadow-xl hover:shadow-2xl text-xs sm:text-sm"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#3D8F8F] hover:bg-[#06555A] disabled:opacity-50 text-white font-bold px-8 py-3 rounded-xl transition-all shadow-sm hover:shadow"
               >
                 {saving
                   ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving…</>
                   : saved
-                  ? <><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Saved Preferences!</>
-                  : "Save Preferences"
+                  ? <><CheckCircle2 className="w-4 h-4" /> Saved!</>
+                  : "Save Changes"
                 }
               </button>
             </div>
@@ -378,5 +378,4 @@ export default function SettingsPage() {
     </DashboardLayout>
   );
 }
-
 
