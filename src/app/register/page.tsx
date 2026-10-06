@@ -55,42 +55,41 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#38bdf8] via-[#7dd3fc] to-[#e0f2fe] flex flex-col justify-between p-4 sm:p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-gif-theme flex flex-col justify-between p-4 sm:p-6 relative overflow-x-hidden">
       
-      {/* Background clouds */}
-      <div className="absolute inset-0 pointer-events-none opacity-80">
-        <svg className="absolute -right-20 top-10 w-[600px] h-[350px] text-white/40" viewBox="0 0 500 300" fill="currentColor">
-          <path d="M120,200 Q80,200 60,160 Q40,120 80,90 Q120,60 180,80 Q220,40 280,60 Q340,30 390,80 Q440,80 450,130 Q470,170 430,200 Z" />
-        </svg>
-        <svg className="absolute -left-20 bottom-10 w-[550px] h-[320px] text-white/30" viewBox="0 0 500 300" fill="currentColor">
-          <path d="M100,220 Q50,210 50,160 Q50,110 100,90 Q140,40 210,60 Q270,30 330,70 Q380,60 410,110 Q450,140 430,200 Q390,230 330,220 Z" />
-        </svg>
-      </div>
+      {/* Subtle dark overlay for contrast */}
+      <div className="fixed inset-0 bg-slate-950/20 backdrop-blur-[2px] pointer-events-none z-0" />
 
       {/* Header */}
-      <header className="relative z-10 max-w-5xl mx-auto w-full flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-slate-900 font-semibold text-xs sm:text-sm bg-white/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/80 hover:bg-white transition shadow-sm">
-          <ArrowLeft className="w-3.5 h-3.5" />
+      <header className="relative z-10 max-w-5xl mx-auto w-full flex items-center justify-between pt-2">
+        <Link 
+          href="/" 
+          className="flex items-center gap-2 text-slate-800 font-semibold text-xs sm:text-sm bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/90 hover:bg-white transition shadow-sm"
+        >
+          <ArrowLeft className="w-4 h-4 text-slate-700" />
           <span>Back to Home</span>
         </Link>
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-slate-950 text-white flex items-center justify-center font-bold text-sm shadow">
+        <Link href="/" className="flex items-center gap-2.5 bg-white/75 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/80 shadow-sm">
+          <div className="w-7 h-7 rounded-full bg-[#06555A] text-white flex items-center justify-center font-bold text-xs shadow">
             ✦
           </div>
-          <span className="font-bold text-lg text-slate-950">TransLang</span>
+          <span className="font-extrabold text-base tracking-tight text-slate-900">Translingua</span>
         </Link>
       </header>
 
       {/* Glass Card */}
       <div className="relative z-10 max-w-lg w-full mx-auto my-auto py-8">
-        <div className="bg-white/95 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-white/90 shadow-2xl">
+        <div className="glass-card-light rounded-3xl p-7 sm:p-10 border border-white/95 shadow-2xl backdrop-blur-2xl">
           <div className="text-center mb-6">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">Create your account</h1>
-            <p className="text-slate-600 text-sm mt-1">Start your 14-day free fluency pass</p>
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#06555A]/10 text-[#06555A] mb-3">
+              <UserPlus className="w-6 h-6" />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Create your account</h1>
+            <p className="text-slate-600 text-sm mt-1">Start your interactive fluency journey today</p>
           </div>
 
           {error && (
-            <div className="mb-5 p-3.5 bg-rose-50 border border-rose-200 rounded-2xl text-rose-700 text-xs font-medium">
+            <div className="mb-5 p-3.5 bg-rose-500/10 border border-rose-300 rounded-2xl text-rose-800 text-xs font-semibold">
               {error}
             </div>
           )}
@@ -105,7 +104,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 placeholder="Jane Doe"
                 required
-                className="w-full px-4 py-2.5 rounded-2xl border border-slate-200/90 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 transition text-slate-900 text-sm placeholder-slate-400"
+                className="w-full px-4 py-2.5 rounded-2xl glass-input text-slate-900 text-sm placeholder-slate-400 focus:outline-none"
               />
             </div>
 
@@ -118,7 +117,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 placeholder="you@example.com"
                 required
-                className="w-full px-4 py-2.5 rounded-2xl border border-slate-200/90 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 transition text-slate-900 text-sm placeholder-slate-400"
+                className="w-full px-4 py-2.5 rounded-2xl glass-input text-slate-900 text-sm placeholder-slate-400 focus:outline-none"
               />
             </div>
 
@@ -130,7 +129,7 @@ export default function RegisterPage() {
                   value={form.nativeLanguage}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2.5 rounded-2xl border border-slate-200/90 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 transition text-slate-900 text-xs font-medium"
+                  className="w-full px-3 py-2.5 rounded-2xl glass-input text-slate-900 text-xs font-semibold focus:outline-none"
                 >
                   <option value="">Select Native</option>
                   {LANGUAGES.map((l) => (
@@ -146,7 +145,7 @@ export default function RegisterPage() {
                   value={form.currentLanguage}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2.5 rounded-2xl border border-slate-200/90 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 transition text-slate-900 text-xs font-medium"
+                  className="w-full px-3 py-2.5 rounded-2xl glass-input text-slate-900 text-xs font-semibold focus:outline-none"
                 >
                   <option value="">Select Target</option>
                   {LANGUAGES.map((l) => (
@@ -166,14 +165,14 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   placeholder="At least 6 characters"
                   required
-                  className="w-full px-4 py-2.5 pr-11 rounded-2xl border border-slate-200/90 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 transition text-slate-900 text-sm placeholder-slate-400"
+                  className="w-full px-4 py-2.5 pr-11 rounded-2xl glass-input text-slate-900 text-sm placeholder-slate-400 focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-900 transition"
                 >
-                  {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4 text-slate-500" />}
                 </button>
               </div>
             </div>
@@ -184,10 +183,10 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setForm({ ...form, role: "student" })}
-                  className={`p-2.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition ${
+                  className={`p-2.5 rounded-2xl border text-xs font-bold flex items-center justify-center gap-2 transition ${
                     form.role === "student"
-                      ? "bg-slate-950 text-white border-slate-950 shadow"
-                      : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+                      ? "bg-[#06555A] text-white border-[#06555A] shadow-md shadow-[#06555A]/20"
+                      : "bg-white/60 text-slate-700 border-slate-200/80 hover:bg-white"
                   }`}
                 >
                   <GraduationCap className="w-4 h-4" />
@@ -196,10 +195,10 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setForm({ ...form, role: "professional" })}
-                  className={`p-2.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition ${
+                  className={`p-2.5 rounded-2xl border text-xs font-bold flex items-center justify-center gap-2 transition ${
                     form.role === "professional"
-                      ? "bg-slate-950 text-white border-slate-950 shadow"
-                      : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+                      ? "bg-[#06555A] text-white border-[#06555A] shadow-md shadow-[#06555A]/20"
+                      : "bg-white/60 text-slate-700 border-slate-200/80 hover:bg-white"
                   }`}
                 >
                   <Briefcase className="w-4 h-4" />
@@ -211,7 +210,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-slate-950 hover:bg-slate-800 disabled:opacity-60 text-white font-semibold py-3.5 rounded-full transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5 mt-4"
+              className="w-full bg-[#06555A] hover:bg-[#054347] disabled:opacity-60 text-white font-bold py-3.5 rounded-full transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#06555A]/25 hover:shadow-xl hover:-translate-y-0.5 mt-4"
             >
               {loading ? (
                 <SandyLoading size={24} />
@@ -224,9 +223,9 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="text-center text-xs text-slate-600 mt-5 pt-5 border-t border-slate-100">
+          <p className="text-center text-xs text-slate-600 mt-5 pt-5 border-t border-slate-200/60">
             Already have an account?{" "}
-            <Link href="/login" className="text-slate-950 font-bold hover:underline">
+            <Link href="/login" className="text-[#06555A] font-bold hover:underline">
               Sign in
             </Link>
           </p>
@@ -234,8 +233,8 @@ export default function RegisterPage() {
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 text-center text-xs text-slate-600 py-2">
-        <p>© 2026 TransLang. Unhurried language mastery.</p>
+      <footer className="relative z-10 text-center text-xs font-medium text-white/90 drop-shadow py-2">
+        <p>© 2026 Translingua. Natural language mastery.</p>
       </footer>
 
     </div>
