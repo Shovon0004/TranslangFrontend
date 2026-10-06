@@ -310,11 +310,11 @@ function TypewriterText({ text, speed = 6 }: { text: string; speed?: number }) {
 // minSpeechMs: discard utterances shorter than this (avoids cough/click false triggers)
 // preSpeechPadMs: ms of audio prepended before speech onset (avoids clipping first phoneme)
 // redemptionMs: grace period after silence before onSpeechEnd fires (handles brief pauses mid-sentence)
-const VAD_POSITIVE_THRESHOLD = 0.60;  // slightly lower → triggers on softer speech
-const VAD_NEGATIVE_THRESHOLD = 0.40;  // ~0.15-0.20 below positive
-const VAD_MIN_SPEECH_MS      = 150;   // ignore bursts < 150ms (was 250ms)
-const VAD_PRE_SPEECH_PAD_MS  = 150;   // 150ms pad before onset (was 300ms)
-const VAD_REDEMPTION_MS      = 180;   // 180ms grace → fires speculative 220ms earlier (was 400ms)
+const VAD_POSITIVE_THRESHOLD = 0.60;
+const VAD_NEGATIVE_THRESHOLD = 0.40;
+const VAD_MIN_SPEECH_MS      = 250;
+const VAD_PRE_SPEECH_PAD_MS  = 200;
+const VAD_REDEMPTION_MS      = 800; // 800ms grace period (prevents premature cutoffs)
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Main component
@@ -1163,9 +1163,19 @@ export default function TalkToAI() {
           window.dispatchEvent(new CustomEvent("vad-speech-resume"));
         },
         onSpeechEnd: (_audio: Float32Array) => {
+          const spoken = (finalTextRef.current || liveSpeechTextRef.current).trim();
+          // Do NOT stop if user hasn't spoken anything yet
+          if (!spoken && (!audioChunksRef.current || audioChunksRef.current.length === 0)) {
+            return;
+          }
           // Speech ended — pre-warm TTS WS + fire speculative Gemini, then stop
           window.dispatchEvent(new CustomEvent("vad-silence-early"));
-          setTimeout(() => stopListening(), 180);  // give Chrome time to emit final result
+          setTimeout(() => {
+            const hasSpoken = (finalTextRef.current || liveSpeechTextRef.current).trim();
+            if (hasSpoken) {
+              stopListening();
+            }
+          }, 400);
         },
         onFrameProcessed: (probs: { isSpeech: number }) => {
           // Speech probability (0-1) drives the waveform bars in real-time
@@ -1201,8 +1211,8 @@ export default function TalkToAI() {
 
     // ── Web Speech API path ────────────────────────────────────────────────
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const SpeechRecAPI = (window as any).SpeechRecognition ||
-                         (window as any).webkitSpeechRecognition;
+    const win = window as any;
+    const SpeechRecAPI = win.SpeechRecognition || win.webkitSpeechRecognition;
     if (SpeechRecAPI) {
       const rec = new SpeechRecAPI();
       rec.continuous      = true;         // browser never auto-stops; VAD owns timing
@@ -1260,7 +1270,11 @@ export default function TalkToAI() {
       };
 
       rec.onerror = (e: { error: string }) => {
-        hasSent = true; // prevent accidental send after error
+        if (e.error === "no-speech" || e.error === "aborted") {
+          // Normal silence while user thinks or before speaking — do NOT abort
+          return;
+        }
+        hasSent = true; // prevent accidental send after fatal error
         speechSendRef.current = null;
         speechRecRef.current  = null;
         liveSpeechTextRef.current = "";
@@ -1278,14 +1292,17 @@ export default function TalkToAI() {
         rec.start();
         setIsListening(true);
         // Run VAD analyser in parallel for the waveform animation only
-        const stream = await navigator.mediaDevices.getUserMedia({
+        navigator.mediaDevices?.getUserMedia({
           audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+        }).then((stream) => {
+          startVAD(stream);
+          rec.addEventListener("end", () => {
+            stream.getTracks().forEach((t: MediaStreamTrack) => t.stop());
+            stopVAD();
+          }, { once: true });
+        }).catch(() => {
+          // Non-fatal: VAD waveform animation optional, Web Speech API continues
         });
-        startVAD(stream);
-        rec.addEventListener("end", () => {
-          stream.getTracks().forEach((t: MediaStreamTrack) => t.stop());
-          stopVAD();
-        }, { once: true });
       } catch (err: unknown) {
         const e = err as { name?: string };
         if (e.name === "NotAllowedError" || e.name === "PermissionDeniedError") {
