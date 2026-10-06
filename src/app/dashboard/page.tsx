@@ -16,6 +16,8 @@ import {
   GraduationCap,
   Briefcase,
   Coins,
+  MessageCircle,
+  Sparkles,
 } from "lucide-react";
 
 interface UserStats {
@@ -28,12 +30,12 @@ interface UserStats {
   level: string;
 }
 
-const LANGUAGES = ["English", "Spanish", "French", "German", "Japanese", "Mandarin", "Portuguese"];
+const LANGUAGES = ["English", "Spanish", "French", "German", "Japanese", "Mandarin", "Portuguese", "Hindi"];
 
 const levelColors: Record<string, string> = {
-  beginner: "bg-[#d0eaeb] text-[#3D8F8F]",
-  intermediate: "bg-yellow-100 text-yellow-700",
-  advanced: "bg-purple-100 text-purple-700",
+  beginner: "bg-emerald-100 text-emerald-800",
+  intermediate: "bg-amber-100 text-amber-800",
+  advanced: "bg-purple-100 text-purple-800",
 };
 
 export default function DashboardPage() {
@@ -43,7 +45,6 @@ export default function DashboardPage() {
   useEffect(() => {
     api.get("/users/me").then((res) => {
       setStats(res.data);
-      // Keep auth context (and sidebar) in sync with latest XP, streak & coins
       updateUser({ xp: res.data.xp, streak: res.data.streak, coins: res.data.coins });
     }).catch(() => {});
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,7 +54,6 @@ export default function DashboardPage() {
   const xp = stats?.xp || user?.xp || 0;
   const coins = stats?.coins ?? user?.coins ?? 0;
   const streak = stats?.streak || user?.streak || 0;
-  // Derive the most-recently-studied language from completed lessons (most accurate)
   const lastCompletedLanguage =
     stats?.completedLessons && stats.completedLessons.length > 0
       ? stats.completedLessons[stats.completedLessons.length - 1].language
@@ -64,171 +64,158 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Hello, {user?.name?.split(" ")[0]} 👋
+      <div className="max-w-5xl mx-auto space-y-6">
+        
+        {/* Top Welcome Banner */}
+        <div className="bg-gradient-to-r from-sky-400 via-teal-400 to-emerald-400 rounded-3xl p-6 sm:p-8 text-slate-950 shadow-lg relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-slate-900 mb-3 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-teal-800" />
+              <span>TransLang Active Workspace</span>
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-950">
+              Welcome back, {user?.name?.split(" ")[0]}!
             </h1>
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 ${
-                user?.role === "professional"
-                  ? "bg-blue-100 text-blue-700"
-                  : "bg-[#d0eaeb] text-[#3D8F8F]"
-              }`}
-            >
-              {user?.role === "professional" ? (
-                <Briefcase className="w-3 h-3" />
-              ) : (
-                <GraduationCap className="w-3 h-3" />
-              )}
-              {user?.role}
-            </span>
+            <p className="text-slate-900/80 text-sm mt-1.5 max-w-lg">
+              {streak > 0
+                ? `You are on a ${streak}-day continuous streak! Keep the momentum going today.`
+                : "Complete your daily conversation practice to ignite your streak."}
+            </p>
           </div>
-          <p className="text-gray-500">
-            {streak > 0
-              ? `You're on a ${streak}-day streak! Keep it going 🔥`
-              : "Start a lesson to build your streak!"}
-          </p>
+
+          <div className="relative z-10 flex items-center gap-3">
+            <Link
+              href="/talk"
+              className="bg-slate-950 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold px-5 py-3 rounded-full shadow-md hover:shadow-xl transition-all flex items-center gap-2"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Start AI Talk</span>
+            </Link>
+          </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
           {[
             {
               label: "Day Streak",
               value: streak,
               icon: Flame,
-              color: "from-orange-400 to-red-400",
-              bg: "bg-orange-50",
+              color: "text-orange-500",
+              bg: "bg-orange-50/80 border-orange-100",
             },
             {
               label: "Total XP",
               value: xp,
               icon: Star,
-              color: "from-yellow-400 to-amber-400",
-              bg: "bg-yellow-50",
+              color: "text-yellow-500",
+              bg: "bg-yellow-50/80 border-yellow-100",
             },
             {
-              label: "Coins",
+              label: "Fluency Coins",
               value: coins,
               icon: Coins,
-              color: "from-amber-400 to-yellow-500",
-              bg: "bg-amber-50",
+              color: "text-amber-500",
+              bg: "bg-amber-50/80 border-amber-100",
             },
             {
-              label: "Lessons Done",
+              label: "Completed Units",
               value: completedCount,
               icon: CheckCircle2,
-              color: "from-[#6FB3B8] to-[#3D8F8F]",
-              bg: "bg-[#d0eaeb]",
+              color: "text-teal-600",
+              bg: "bg-teal-50/80 border-teal-100",
             },
           ].map(({ label, value, icon: Icon, color, bg }) => (
-            <div key={label} className={`${bg} rounded-2xl p-5 border border-white shadow-sm`}>
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-3 shadow`}>
-                <Icon className="w-5 h-5 text-white" />
+            <div key={label} className={`${bg} rounded-2xl p-4 sm:p-5 border shadow-sm transition-all hover:shadow-md`}>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold text-slate-500">{label}</span>
+                <Icon className={`w-4 h-4 ${color}`} />
               </div>
-              <p className="text-3xl font-bold text-gray-900">{value}</p>
-              <p className="text-sm text-gray-500 font-medium mt-0.5">{label}</p>
+              <p className="text-2xl sm:text-3xl font-extrabold text-slate-950">{value}</p>
             </div>
           ))}
         </div>
 
-        {/* XP Progress */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-8">
+        {/* Level Progression */}
+        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-[#3D8F8F]" />
-              <span className="font-semibold text-gray-800">Level Progress</span>
+              <TrendingUp className="w-4 h-4 text-teal-600" />
+              <span className="font-bold text-sm text-slate-900">Fluency Progression</span>
             </div>
-            <span className={`px-3 py-1 rounded-full text-xs font-bold capitalize ${levelColors[stats?.level || "beginner"]}`}>
-              {stats?.level || "beginner"}
+            <span className={`px-3 py-1 rounded-full text-xs font-bold capitalize ${levelColors[stats?.level || "beginner"] || "bg-slate-100 text-slate-700"}`}>
+              {stats?.level || "beginner"} Level
             </span>
           </div>
-          <div className="w-full bg-gray-100 rounded-full h-3">
+          <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden p-0.5">
             <div
-              className="bg-gradient-to-r from-[#6FB3B8] to-[#3D8F8F] h-3 rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-teal-400 to-sky-500 h-full rounded-full transition-all duration-500"
               style={{ width: `${xpProgress}%` }}
             />
           </div>
-          <p className="text-xs text-gray-400 mt-2">
-            {xp % xpToNextLevel} / {xpToNextLevel} XP to next level
+          <p className="text-[11px] text-slate-400 mt-2 font-medium">
+            {xp % xpToNextLevel} / {xpToNextLevel} XP towards next milestone
           </p>
         </div>
 
-        {/* Currently Learning */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Globe className="w-5 h-5 text-[#3D8F8F]" />
-              <h2 className="font-bold text-gray-800">Continue Learning</h2>
-            </div>
-            {currentLanguage ? (
-              <div className="flex items-center justify-between p-4 bg-[#d0eaeb] rounded-xl border border-[#6FB3B8]/30">
-                <div>
-                  <p className="font-semibold text-gray-800">{currentLanguage}</p>
-                  <p className="text-sm text-gray-500">{completedCount} lessons completed</p>
+        {/* Learning Paths */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Active Course */}
+          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Globe className="w-4 h-4 text-teal-600" />
+                <h2 className="font-bold text-sm text-slate-900">Current Target Language</h2>
+              </div>
+              {currentLanguage ? (
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-extrabold text-base text-slate-900">{currentLanguage}</h3>
+                    <p className="text-xs text-slate-500 mt-0.5">{completedCount} units mastered</p>
+                  </div>
+                  <Link
+                    href="/lessons"
+                    className="bg-slate-950 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2 rounded-full shadow transition flex items-center gap-1.5"
+                  >
+                    <span>Continue</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
-                <Link
-                  href="/lessons"
-                  className="flex items-center gap-1 text-sm font-bold text-[#3D8F8F] hover:text-[#06555A]"
-                >
-                  Continue <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            ) : (
-              <div className="text-center py-6">
-                <BookOpen className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-                <p className="text-gray-500 text-sm">No language selected yet</p>
-                <Link
-                  href="/lessons"
-                  className="mt-3 inline-block text-sm font-bold text-[#3D8F8F] hover:underline"
-                >
-                  Browse Lessons →
-                </Link>
-              </div>
-            )}
+              ) : (
+                <div className="text-center py-6">
+                  <BookOpen className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                  <p className="text-slate-500 text-xs font-medium">No language selected yet</p>
+                  <Link
+                    href="/lessons"
+                    className="mt-3 inline-block text-xs font-bold text-teal-600 hover:underline"
+                  >
+                    Choose Language &rarr;
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Pick a Language */}
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          {/* Available Languages */}
+          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Trophy className="w-5 h-5 text-yellow-500" />
-              <h2 className="font-bold text-gray-800">Available Languages</h2>
+              <Trophy className="w-4 h-4 text-amber-500" />
+              <h2 className="font-bold text-sm text-slate-900">Explore New Languages</h2>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {LANGUAGES.map((lang) => (
                 <Link
                   key={lang}
                   href={`/lessons?language=${lang}`}
-                  className="p-3 rounded-xl border border-gray-100 hover:border-[#6FB3B8] hover:bg-[#d0eaeb] transition text-sm font-medium text-gray-700 flex items-center gap-2"
+                  className="p-2.5 rounded-2xl border border-slate-100 bg-slate-50/60 hover:bg-slate-950 hover:text-white hover:border-slate-950 transition-all text-xs font-semibold text-slate-700 text-center flex items-center justify-center gap-1.5 shadow-sm"
                 >
-                  <Globe className="w-4 h-4 text-gray-300" />
-                  {lang}
+                  <span>{lang}</span>
                 </Link>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Recent Activity */}
-        {stats?.completedLessons && stats.completedLessons.length > 0 && (
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-            <h2 className="font-bold text-gray-800 mb-4">Recent Lessons</h2>
-            <div className="space-y-3">
-              {stats.completedLessons.slice(-5).reverse().map((lesson) => (
-                <div key={lesson._id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50">
-                  <CheckCircle2 className="w-5 h-5 text-[#3D8F8F] flex-shrink-0" />
-                  <div>
-                    <p className="text-sm font-semibold text-gray-800">{lesson.title}</p>
-                    <p className="text-xs text-gray-400">{lesson.language}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </DashboardLayout>
   );

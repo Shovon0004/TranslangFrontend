@@ -15,16 +15,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#EDE9E1]">
-        <SandyLoading size={200} />
+      <div className="flex items-center justify-center h-screen bg-slate-50">
+        <SandyLoading size={160} />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-[#EDE9E1]">
+    <div className="flex min-h-screen bg-slate-50 bg-gradient-to-br from-sky-50/40 via-slate-50 to-teal-50/20 text-slate-900">
       <Sidebar />
-      <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">{children}</main>
+      <main className="flex-1 md:ml-64 p-4 sm:p-6 md:p-8 pb-24 md:pb-8 transition-all">
+        {children}
+      </main>
     </div>
   );
 }
