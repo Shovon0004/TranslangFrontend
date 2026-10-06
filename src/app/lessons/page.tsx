@@ -7,6 +7,7 @@ import api from "@/lib/api";
 import {
   BookOpen,
   CheckCircle2,
+  Check,
   Lock,
   Star,
   ChevronRight,
@@ -23,11 +24,39 @@ import {
   Mic,
   StopCircle,
   Sparkles,
-  Flame,
+  LayoutGrid,
+  Milestone,
 } from "lucide-react";
 import Lottie from "lottie-react";
 import deliveryAnimation from "../../../public/lotti/Delivery.json";
 import treeAnimation from "../../../public/lotti/Tree Lottie animation.json";
+
+function ClimberAvatar({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 60 90" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Head */}
+      <circle cx="30" cy="18" r="9" fill="#2563EB" />
+      {/* Hair */}
+      <path d="M22 14C23 8 37 8 38 14C39 18 36 21 30 21C24 21 21 18 22 14Z" fill="#FBBF24" />
+      {/* Face glow */}
+      <circle cx="30" cy="18" r="7" fill="#60A5FA" opacity="0.4" />
+      {/* Arms reaching to ladder rails */}
+      <path d="M22 30L8 16" stroke="#FBBF24" strokeWidth="4.5" strokeLinecap="round" />
+      <path d="M38 30L52 16" stroke="#FBBF24" strokeWidth="4.5" strokeLinecap="round" />
+      {/* Backpack */}
+      <rect x="23" y="27" width="14" height="18" rx="4" fill="#CBD5E1" />
+      <rect x="25" y="29" width="10" height="14" rx="2" fill="#3B82F6" />
+      {/* Body / Shirt */}
+      <rect x="22" y="26" width="16" height="20" rx="4" fill="#FFFFFF" />
+      {/* Legs */}
+      <path d="M25 46L17 68" stroke="#A855F7" strokeWidth="5.5" strokeLinecap="round" />
+      <path d="M35 46L43 66" stroke="#A855F7" strokeWidth="5.5" strokeLinecap="round" />
+      {/* Shoes */}
+      <circle cx="16" cy="70" r="4.5" fill="#EC4899" />
+      <circle cx="44" cy="68" r="4.5" fill="#EC4899" />
+    </svg>
+  );
+}
 
 interface LessonContent {
   _id?: string;
@@ -127,34 +156,10 @@ interface Lesson {
 const LANGUAGES = ["All", "English", "Spanish", "French", "German", "Japanese", "Mandarin", "Portuguese"];
 const LEVELS = ["All", "beginner", "intermediate", "advanced"];
 
-const levelStyles: Record<string, {
-  badge: string;
-  glowBar: string;
-  iconBg: string;
-  tierLabel: string;
-  accentBorder: string;
-}> = {
-  beginner: {
-    badge: "bg-emerald-500/15 text-emerald-300 border-emerald-400/30",
-    glowBar: "from-emerald-400 via-teal-400 to-cyan-500",
-    iconBg: "bg-emerald-500/20 text-emerald-300 border-emerald-400/40",
-    tierLabel: "Tier I • Novice",
-    accentBorder: "hover:border-emerald-400/70 hover:shadow-emerald-500/20",
-  },
-  intermediate: {
-    badge: "bg-amber-500/15 text-amber-300 border-amber-400/30",
-    glowBar: "from-amber-400 via-orange-400 to-rose-500",
-    iconBg: "bg-amber-500/20 text-amber-300 border-amber-400/40",
-    tierLabel: "Tier II • Adept",
-    accentBorder: "hover:border-amber-400/70 hover:shadow-amber-500/20",
-  },
-  advanced: {
-    badge: "bg-purple-500/15 text-purple-300 border-purple-400/30",
-    glowBar: "from-purple-400 via-fuchsia-400 to-pink-500",
-    iconBg: "bg-purple-500/20 text-purple-300 border-purple-400/40",
-    tierLabel: "Tier III • Master",
-    accentBorder: "hover:border-purple-400/70 hover:shadow-purple-500/20",
-  },
+const levelColors: Record<string, string> = {
+  beginner: "bg-[#e0f7fa] text-[#00796b] border-[#4dd0e1]",
+  intermediate: "bg-[#fff9c4] text-[#fbc02d] border-[#ffe082]",
+  advanced: "bg-[#ede7f6] text-[#7e57c2] border-[#b39ddb]",
 };
 
 const typeIcons: Record<string, string> = {
@@ -459,6 +464,7 @@ function ListeningQuestion({
   showResult: boolean;
   selectedAnswer: string | null;
 }) {
+  // Prefer pre-generated S3 audio; fall back to live TTS API if not available
   const tts = useTTS(question.audioText || question.question, question.audioUrl);
 
   useEffect(() => {
@@ -469,58 +475,56 @@ function ListeningQuestion({
 
   return (
     <div>
-      <div className="bg-slate-800/80 rounded-3xl border border-slate-700/80 p-6 mb-6 text-center text-white shadow-inner">
-        <div className="flex justify-center mb-3">
-          <div className="relative w-16 h-16 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 shadow-lg flex items-center justify-center">
-            <Headphones className="w-8 h-8 text-cyan-300" />
+      <div className="bg-gradient-to-br from-[#d0eaeb] to-[#b8dfe0] rounded-3xl border border-[#6FB3B8]/30 p-8 mb-6 text-center">
+        <div className="flex justify-center mb-4">
+          <div className="relative w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center">
+            <Headphones className="w-10 h-10 text-[#3D8F8F]" />
             {tts.isPlaying && (
-              <span className="absolute inset-0 rounded-2xl border-2 border-cyan-400 animate-ping opacity-40" />
+              <span className="absolute inset-0 rounded-full border-4 border-[#3D8F8F] animate-ping opacity-40" />
             )}
           </div>
         </div>
-        <p className="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-3">
-          {tts.isLoading ? "Loading Audio Frequency..." : tts.isPlaying ? "Playing Audio Stream..." : tts.hasPlayed ? "Replay Audio Clip" : "Tap to Play"}
+        <p className="text-sm font-semibold text-[#3D8F8F] mb-4">
+          {tts.isLoading ? "Loading audio..." : tts.isPlaying ? "Playing audio..." : tts.hasPlayed ? "Listen again?" : "Tap to play"}
         </p>
         <div className="flex justify-center gap-3">
           <button
             onClick={tts.isPlaying ? tts.stop : tts.play}
             disabled={tts.isLoading}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#06555A] to-[#0ea5e9] hover:from-[#08737a] hover:to-[#38bdf8] disabled:opacity-50 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl transition shadow-md"
+            className="flex items-center gap-2 px-6 py-3 bg-[#3D8F8F] hover:bg-[#06555A] disabled:bg-gray-300 text-white font-bold rounded-2xl transition shadow-md"
           >
             {tts.isLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="w-5 h-5 animate-spin" />
             ) : tts.isPlaying ? (
-              <VolumeX className="w-4 h-4" />
+              <VolumeX className="w-5 h-5" />
             ) : (
-              <Play className="w-4 h-4" />
+              <Play className="w-5 h-5" />
             )}
-            {tts.isLoading ? "Loading..." : tts.isPlaying ? "Stop" : tts.hasPlayed ? "Replay" : "Play Audio"}
+            {tts.isLoading ? "Loading..." : tts.isPlaying ? "Stop" : tts.hasPlayed ? "Replay" : "Play"}
           </button>
         </div>
         {tts.error && (
-          <p className="text-xs text-rose-400 mt-2">Audio unavailable — please answer from the prompt text.</p>
+          <p className="text-xs text-red-500 mt-2">Audio unavailable — answer from the text below.</p>
         )}
       </div>
-
-      <p className="text-center text-sm font-bold text-slate-200 mb-4">{question.question}</p>
-
+      <p className="text-center text-sm font-semibold text-gray-600 mb-4">{question.question}</p>
       <div className="space-y-3">
         {question.options.map((option, idx) => {
           const isCorrect = option === question.correctAnswer;
           const isSelected = option === selectedAnswer;
-          let cls = "w-full p-4 rounded-2xl border-2 text-left font-bold text-sm transition-all ";
+          let cls = "w-full p-4 rounded-2xl border-2 text-left font-semibold text-sm transition-all ";
           if (!showResult) {
-            cls += "border-slate-700/80 bg-slate-800/80 hover:border-cyan-400 hover:bg-slate-800 text-white shadow-sm";
+            cls += "border-gray-200 hover:border-[#6FB3B8] hover:bg-[#d0eaeb] text-gray-800";
           } else if (isCorrect) {
-            cls += "border-emerald-500 bg-emerald-500/20 text-emerald-200 shadow-md shadow-emerald-950";
+            cls += "border-[#3D8F8F] bg-[#d0eaeb] text-[#06555A]";
           } else if (isSelected && !isCorrect) {
-            cls += "border-rose-500 bg-rose-500/20 text-rose-200 shadow-md shadow-rose-950";
+            cls += "border-red-400 bg-red-50 text-red-800";
           } else {
-            cls += "border-slate-800 bg-slate-900/50 text-slate-500";
+            cls += "border-gray-200 text-gray-400";
           }
           return (
             <button key={`${option}-${idx}`} className={cls} onClick={() => !showResult && onAnswer(option)}>
-              {isCorrect && showResult && <CheckCircle2 className="inline w-4 h-4 mr-2 text-emerald-400" />}
+              {isCorrect && showResult && <CheckCircle2 className="inline w-4 h-4 mr-2 text-[#3D8F8F]" />}
               {option}
             </button>
           );
@@ -543,31 +547,32 @@ function StandardQuestion({
 }) {
   return (
     <div>
-      <div className="bg-slate-800/90 rounded-3xl border border-slate-700/80 p-6 mb-5 text-white shadow-inner">
-        <p className="text-xs font-black text-cyan-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
-          <span>{typeIcons[question.type] || "❓"}</span>
-          <span>{question.type} Challenge</span>
+      <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 mb-4">
+        <p className="text-xs font-bold text-[#3D8F8F] uppercase tracking-widest mb-3">
+          {typeIcons[question.type] || "❓"} {question.type}
         </p>
-        <h3 className="text-lg sm:text-xl font-black text-white">{question.question}</h3>
+        <h3 className="text-xl font-bold text-gray-900">{question.question}</h3>
       </div>
-
+      <div className="flex justify-center mb-4">
+        <Lottie animationData={deliveryAnimation} loop className="w-36 h-36" style={{ background: "transparent" }} />
+      </div>
       <div className="space-y-3">
         {question.options.map((option, idx) => {
           const isCorrect = option === question.correctAnswer;
           const isSelected = option === selectedAnswer;
-          let cls = "w-full p-4 rounded-2xl border-2 text-left font-bold text-sm transition-all ";
+          let cls = "w-full p-4 rounded-2xl border-2 text-left font-semibold text-sm transition-all ";
           if (!showResult) {
-            cls += "border-slate-700/80 bg-slate-800/80 hover:border-cyan-400 hover:bg-slate-800 text-white shadow-sm";
+            cls += "border-gray-200 hover:border-[#6FB3B8] hover:bg-[#d0eaeb] text-gray-800";
           } else if (isCorrect) {
-            cls += "border-emerald-500 bg-emerald-500/20 text-emerald-200 shadow-md shadow-emerald-950";
+            cls += "border-[#3D8F8F] bg-[#d0eaeb] text-[#06555A]";
           } else if (isSelected && !isCorrect) {
-            cls += "border-rose-500 bg-rose-500/20 text-rose-200 shadow-md shadow-rose-950";
+            cls += "border-red-400 bg-red-50 text-red-800";
           } else {
-            cls += "border-slate-800 bg-slate-900/50 text-slate-500";
+            cls += "border-gray-200 text-gray-400";
           }
           return (
             <button key={`${option}-${idx}`} className={cls} onClick={() => !showResult && onAnswer(option)}>
-              {isCorrect && showResult && <CheckCircle2 className="inline w-4 h-4 mr-2 text-emerald-400" />}
+              {isCorrect && showResult && <CheckCircle2 className="inline w-4 h-4 mr-2 text-[#3D8F8F]" />}
               {option}
             </button>
           );
@@ -596,6 +601,7 @@ function LessonsContent() {
   const [score, setScore] = useState(0);
   const [speakScore, setSpeakScore] = useState(0);
   const [listTab, setListTab] = useState<"lessons" | "speaking">("lessons");
+  const [viewMode, setViewMode] = useState<"path" | "grid">("path");
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -682,43 +688,43 @@ function LessonsContent() {
       <DashboardLayout>
         <div className="max-w-2xl mx-auto">
           {phase !== "done" ? (
-            <div className="bg-slate-900/90 backdrop-blur-2xl border border-slate-700/80 rounded-3xl p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
+            <div>
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setActiveLesson(null)}
-                    className="w-10 h-10 rounded-2xl bg-slate-800/80 border border-slate-700 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-md"
+                    className="w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-4 h-4 text-gray-600" />
                   </button>
                   <div>
-                    <h2 className="font-black text-lg text-white tracking-tight">{activeLesson.title}</h2>
-                    <p className="text-xs font-bold text-cyan-400 uppercase tracking-wider">{activeLesson.language}</p>
+                    <h2 className="font-bold text-gray-900">{activeLesson.title}</h2>
+                    <p className="text-xs text-gray-500">{activeLesson.language}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-black uppercase tracking-wider bg-slate-800/80 px-3 py-1 rounded-xl border border-slate-700 text-slate-300">
+                  <span className="text-sm font-semibold text-gray-500">
                     {quizIndex + 1} / {phaseContent.length}
                   </span>
                   {currentQuestion?.type === "listening" && (
-                    <p className="text-xs text-cyan-400 font-bold flex items-center justify-end gap-1 mt-1.5">
-                      <Volume2 className="w-3.5 h-3.5" /> Audio Quest
+                    <p className="text-xs text-[#3D8F8F] font-medium flex items-center justify-end gap-1 mt-0.5">
+                      <Volume2 className="w-3 h-3" /> Listening
                     </p>
                   )}
                   {currentQuestion?.type === "speaking" && (
-                    <p className="text-xs text-emerald-400 font-bold flex items-center justify-end gap-1 mt-1.5">
-                      <Mic className="w-3.5 h-3.5" /> Voice Challenge
+                    <p className="text-xs text-green-600 font-medium flex items-center justify-end gap-1 mt-0.5">
+                      <Mic className="w-3 h-3" /> Speak Practice
                     </p>
                   )}
                 </div>
               </div>
 
               {/* Progress bar */}
-              <div className="w-full bg-slate-800/90 rounded-full h-2.5 mb-8 overflow-hidden p-0.5 border border-slate-700/60">
+              <div className="w-full bg-gray-100 rounded-full h-2 mb-8">
                 <div
-                  className={`h-full rounded-full transition-all duration-300 bg-gradient-to-r ${
-                    phase === "speaking" ? "from-emerald-500 to-teal-400" : "from-[#06555A] to-cyan-400"
+                  className={`h-2 rounded-full transition-all ${
+                    phase === "speaking" ? "bg-green-500" : "bg-[#3D8F8F]"
                   }`}
                   style={{ width: `${((quizIndex + 1) / phaseContent.length) * 100}%` }}
                 />
@@ -752,14 +758,19 @@ function LessonsContent() {
                     />
                   )}
 
-                  {showResult && currentQuestion.explanation && (
+                  {showResult && currentQuestion.explanation && currentQuestion.type !== "speaking" && (
                     <div
-                      className={`mt-5 p-4 rounded-2xl text-xs font-semibold leading-relaxed border ${
-                        selectedAnswer === currentQuestion.correctAnswer || currentQuestion.type === "speaking"
-                          ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
-                          : "bg-rose-500/15 text-rose-300 border-rose-500/30"
+                      className={`mt-4 p-4 rounded-2xl text-sm font-medium ${
+                        selectedAnswer === currentQuestion.correctAnswer
+                          ? "bg-[#d0eaeb] text-[#06555A] border border-[#6FB3B8]/40"
+                          : "bg-red-50 text-red-800 border border-red-200"
                       }`}
                     >
+                      💡 {currentQuestion.explanation}
+                    </div>
+                  )}
+                  {showResult && currentQuestion.explanation && currentQuestion.type === "speaking" && (
+                    <div className="mt-4 p-4 rounded-2xl text-sm font-medium bg-[#d0eaeb] text-[#06555A] border border-[#6FB3B8]/40">
                       💡 {currentQuestion.explanation}
                     </div>
                   )}
@@ -767,78 +778,76 @@ function LessonsContent() {
                   {showResult && (
                     <button
                       onClick={handleNext}
-                      className={`w-full mt-6 text-white font-extrabold text-sm uppercase tracking-wider py-4 rounded-2xl transition-all duration-200 shadow-lg ${
+                      className={`w-full mt-6 text-white font-bold py-4 rounded-2xl transition shadow-md ${
                         phase === "speaking"
-                          ? "bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 shadow-emerald-950/60"
-                          : "bg-gradient-to-r from-[#06555A] to-[#0ea5e9] hover:from-[#08737a] hover:to-[#38bdf8] shadow-cyan-950/60"
+                          ? "bg-green-500 hover:bg-emerald-600 shadow-green-200"
+                          : "bg-[#3D8F8F] hover:bg-[#06555A] shadow-[#6FB3B8]/30"
                       }`}
                     >
-                      {quizIndex >= phaseContent.length - 1 ? "Complete Mission →" : "Next Stage →"}
+                      {quizIndex >= phaseContent.length - 1 ? "Finish" : "Next →"}
                     </button>
                   )}
                 </div>
               )}
             </div>
           ) : (
-            <div className="bg-slate-900/90 backdrop-blur-2xl border border-slate-700/80 rounded-3xl p-8 sm:p-12 text-center text-white shadow-2xl">
-              <div className="flex justify-center mb-2">
-                <Lottie animationData={treeAnimation} loop className="w-44 h-44" style={{ background: "transparent" }} />
+            <div className="text-center py-12">
+              <div className="flex justify-center">
+                <Lottie animationData={treeAnimation} loop className="w-48 h-48" style={{ background: "transparent" }} />
               </div>
-              <h2 className="text-3xl font-black text-white tracking-tight mb-2">
-                {listTab === "speaking" ? "Voice Quest Cleared! 🎙️" : "Mission Mastered! 🏆"}
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                {listTab === "speaking" ? "Speaking Practice Done! 🎉" : "Lesson Complete! 🎉"}
               </h2>
-              <p className="text-slate-300 text-sm font-medium mb-6">
-                {listTab === "speaking"
-                  ? speakScore === speakContent.length ? "Flawless pronunciation across all phrases!" : "Solid progress! Keep training your ear and voice."
-                  : score === mainContent.length ? "Flawless victory! All answers correct." : "Great effort! Review and master the tricky spots."}
-              </p>
 
               {/* Score card */}
-              <div className="flex gap-4 justify-center mb-6">
+              <div className="flex gap-3 justify-center mb-5">
                 {listTab !== "speaking" && (
-                  <div className="bg-slate-800/80 border border-slate-700 rounded-2xl px-8 py-5 text-center shadow-inner">
-                    <p className="text-xs font-black text-cyan-400 uppercase tracking-wider mb-1">Accuracy Score</p>
-                    <p className="text-4xl font-black text-white">{score}<span className="text-lg font-bold text-slate-400"> / {mainContent.length}</span></p>
+                  <div className="bg-[#d0eaeb] border border-[#6FB3B8]/40 rounded-2xl px-8 py-5 text-center">
+                    <p className="text-xs font-bold text-[#3D8F8F] uppercase tracking-wide mb-1">📚 Score</p>
+                    <p className="text-3xl font-bold text-[#06555A]">{score}<span className="text-lg font-semibold text-gray-400"> / {mainContent.length}</span></p>
                   </div>
                 )}
                 {listTab === "speaking" && (
-                  <div className="bg-emerald-500/15 border border-emerald-500/30 rounded-2xl px-8 py-5 text-center shadow-inner">
-                    <p className="text-xs font-black text-emerald-300 uppercase tracking-wider mb-1">Voice Mastery</p>
-                    <p className="text-4xl font-black text-emerald-200">{speakScore}<span className="text-lg font-bold text-emerald-400/60"> / {speakContent.length}</span></p>
+                  <div className="bg-green-50 border border-green-200 rounded-2xl px-8 py-5 text-center">
+                    <p className="text-xs font-bold text-green-600 uppercase tracking-wide mb-1">🎤 Speaking Score</p>
+                    <p className="text-3xl font-bold text-green-700">{speakScore}<span className="text-lg font-semibold text-gray-400"> / {speakContent.length}</span></p>
                   </div>
                 )}
               </div>
 
-              {/* Reward Pills */}
-              <div className="flex items-center justify-center gap-3 mb-8">
-                <div className="flex items-center gap-2 bg-amber-500/20 text-amber-300 border border-amber-400/40 px-4 py-2 rounded-2xl font-black text-sm shadow-inner">
-                  <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                  +{activeLesson.xpReward} XP Earned
+              <p className="text-gray-400 text-sm mb-6">
+                {listTab === "speaking"
+                  ? speakScore === speakContent.length ? "Perfect! All phrases spoken correctly! 🎉" : speakScore >= speakContent.length / 2 ? "Good effort! Keep practising." : "Keep going — practice makes perfect!"
+                  : score === mainContent.length ? "Perfect score! 🎉" : score >= mainContent.length / 2 ? "Great job! Keep practising." : "Keep going — practice makes perfect!"}
+              </p>
+              <div className="flex items-center justify-center gap-4 mb-8">
+                <div className="flex items-center gap-2 text-yellow-600 font-bold text-lg">
+                  <Star className="w-6 h-6 text-yellow-500" />
+                  +{activeLesson.xpReward} XP earned
                 </div>
-                <div className="flex items-center gap-2 bg-yellow-500/20 text-yellow-300 border border-yellow-400/40 px-4 py-2 rounded-2xl font-black text-sm shadow-inner">
-                  <span className="text-base">🪙</span>
-                  +{Math.max(5, Math.ceil(activeLesson.xpReward / 10))} Coins
+                <div className="flex items-center gap-2 text-amber-600 font-bold text-lg">
+                  <span className="text-xl">🪙</span>
+                  +{Math.max(5, Math.ceil(activeLesson.xpReward / 10))} coins
                 </div>
               </div>
-
               <div className="flex gap-3 justify-center flex-wrap">
                 <button
                   onClick={() => startLesson(activeLesson, listTab === "speaking" ? "speaking" : "main")}
-                  className="px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-extrabold text-xs uppercase tracking-wider rounded-2xl transition flex items-center gap-2 shadow-md"
+                  className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-2xl transition flex items-center gap-2"
                 >
-                  <RotateCcw className="w-4 h-4" /> Replay
+                  <RotateCcw className="w-4 h-4" /> Try Again
                 </button>
                 <button
                   onClick={() => setActiveLesson(null)}
-                  className="px-6 py-3 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 font-extrabold text-xs uppercase tracking-wider rounded-2xl transition"
+                  className="px-6 py-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold rounded-2xl transition"
                 >
-                  Quest Board
+                  Back to Lessons
                 </button>
                 <button
                   onClick={() => router.push("/dashboard")}
-                  className="px-6 py-3 bg-gradient-to-r from-[#06555A] to-[#0ea5e9] hover:from-[#08737a] hover:to-[#38bdf8] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-cyan-950/60"
+                  className="px-6 py-3 bg-[#3D8F8F] hover:bg-[#06555A] text-white font-bold rounded-2xl transition shadow-md shadow-[#6FB3B8]/30"
                 >
-                  Dashboard →
+                  Go to Dashboard
                 </button>
               </div>
             </div>
@@ -850,73 +859,103 @@ function LessonsContent() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-6xl mx-auto space-y-6">
-        {/* Gaming Quest Board Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="max-w-5xl mx-auto space-y-6">
+        {/* Header with Title and Mode Switchers */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 shadow-sm flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                ⚡ Mission Board
+              <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/80 backdrop-blur-md text-[#7c3aed] border border-white shadow-sm flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#7c3aed]" />
+                Fluency Journey
               </span>
-              <span className="text-xs font-bold text-slate-300">
-                {completedIds.length}/{lessons.length} Quests Mastered
+              <span className="text-xs font-bold text-white drop-shadow">
+                {completedIds.length}/{lessons.length} Lessons Cleared
               </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow-md">
-              Language Quests
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight drop-shadow-md">
+              Learning Roadmap
             </h1>
-            <p className="text-slate-300 text-sm font-medium mt-1">
+            <p className="text-slate-100/90 text-sm font-medium mt-1 drop-shadow">
               {user?.role === "professional"
-                ? "Conquer professional scenarios tailored for real-world fluency"
-                : "Level up your fluency one interactive mission at a time"}
+                ? "Ascend your business fluency track one level at a time"
+                : "Climb the ladder to natural language mastery"}
             </p>
           </div>
 
-          {/* Top-level Mode Selector */}
-          <div className="flex items-center gap-2 p-1.5 bg-slate-900/80 backdrop-blur-2xl rounded-2xl border border-slate-700/80 shadow-xl">
-            <button
-              onClick={() => setListTab("lessons")}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-all duration-200 ${
-                listTab === "lessons"
-                  ? "bg-gradient-to-r from-[#06555A] to-[#0ea5e9] text-white shadow-lg shadow-cyan-900/50"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <BookOpen className="w-4 h-4" />
-              <span>Standard Quests</span>
-            </button>
-            <button
-              onClick={() => setListTab("speaking")}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-all duration-200 ${
-                listTab === "speaking"
-                  ? "bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-lg shadow-emerald-900/50"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <Mic className="w-4 h-4" />
-              <span>Voice Lab</span>
-            </button>
+          {/* View Mode & Mode Tabs */}
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Standard / Speaking toggle */}
+            <div className="flex items-center gap-1 p-1 bg-white/80 backdrop-blur-xl rounded-2xl border border-white shadow-sm">
+              <button
+                onClick={() => setListTab("lessons")}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-bold text-xs transition ${
+                  listTab === "lessons"
+                    ? "bg-[#06555A] text-white shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Lessons</span>
+              </button>
+              <button
+                onClick={() => setListTab("speaking")}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-bold text-xs transition ${
+                  listTab === "speaking"
+                    ? "bg-emerald-600 text-white shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <Mic className="w-3.5 h-3.5" />
+                <span>Speak</span>
+              </button>
+            </div>
+
+            {/* Path / Grid View Switch */}
+            <div className="flex items-center gap-1 p-1 bg-white/80 backdrop-blur-xl rounded-2xl border border-white shadow-sm">
+              <button
+                onClick={() => setViewMode("path")}
+                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-bold text-xs transition ${
+                  viewMode === "path"
+                    ? "bg-purple-600 text-white shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+                title="Pathway Ladder View"
+              >
+                <Milestone className="w-3.5 h-3.5" />
+                <span>Path</span>
+              </button>
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-bold text-xs transition ${
+                  viewMode === "grid"
+                    ? "bg-purple-600 text-white shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+                title="Grid View"
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span>Grid</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* High-Tech Gaming Filter HUD */}
-        <div className="bg-slate-900/85 backdrop-blur-2xl rounded-3xl border border-slate-700/80 shadow-2xl p-5 text-white">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            {/* Language filter */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-xs font-black uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 min-w-[70px]">
-                <Globe className="w-3.5 h-3.5" /> Language
+        {/* Filter HUD */}
+        <div className="bg-white/85 backdrop-blur-2xl rounded-3xl border border-white shadow-lg p-4 text-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                <Globe className="w-3.5 h-3.5 text-[#06555A]" /> Language:
               </span>
               <div className="flex gap-1.5 flex-wrap">
                 {LANGUAGES.map((lang) => (
                   <button
                     key={lang}
                     onClick={() => setSelectedLanguage(lang)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
                       selectedLanguage === lang
-                        ? "bg-[#06555A] text-cyan-200 border border-cyan-400/50 shadow-md shadow-cyan-950"
-                        : "bg-slate-800/80 text-slate-400 border border-slate-700/80 hover:text-white hover:bg-slate-800"
+                        ? "bg-[#06555A] text-white shadow-sm"
+                        : "bg-white/70 text-slate-700 hover:bg-white border border-slate-200/60"
                     }`}
                   >
                     {lang}
@@ -925,20 +964,19 @@ function LessonsContent() {
               </div>
             </div>
 
-            {/* Level filter */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5 min-w-[70px]">
-                <Filter className="w-3.5 h-3.5" /> Tier
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                <Filter className="w-3.5 h-3.5 text-purple-600" /> Level:
               </span>
               <div className="flex gap-1.5 flex-wrap">
                 {LEVELS.map((level) => (
                   <button
                     key={level}
                     onClick={() => setSelectedLevel(level)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold capitalize transition-all duration-200 ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize transition ${
                       selectedLevel === level
-                        ? "bg-amber-500/20 text-amber-300 border border-amber-400/50 shadow-md shadow-amber-950"
-                        : "bg-slate-800/80 text-slate-400 border border-slate-700/80 hover:text-white hover:bg-slate-800"
+                        ? "bg-purple-600 text-white shadow-sm"
+                        : "bg-white/70 text-slate-700 hover:bg-white border border-slate-200/60"
                     }`}
                   >
                     {level}
@@ -952,8 +990,8 @@ function LessonsContent() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 animate-fade-in">
             <Lottie animationData={treeAnimation} loop className="w-24 h-24 mb-4" style={{ background: "transparent" }} />
-            <div className="w-10 h-10 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-            <span className="mt-3 text-cyan-300 font-bold text-sm tracking-wider uppercase">Loading Quests...</span>
+            <div className="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
+            <span className="mt-3 text-white font-bold text-sm tracking-wider drop-shadow">Loading Roadmap...</span>
           </div>
         ) : (() => {
           const filtered = lessons.filter((l) =>
@@ -961,153 +999,259 @@ function LessonsContent() {
               ? l.content.some((c) => c.type === "speaking")
               : l.content.some((c) => c.type !== "speaking")
           );
+
           if (filtered.length === 0) return (
-            <div className="text-center py-20 animate-fade-in bg-slate-900/80 backdrop-blur-2xl rounded-3xl border border-slate-700/80 p-8">
+            <div className="text-center py-20 bg-white/80 backdrop-blur-2xl rounded-3xl border border-white p-8 shadow-xl">
               <Lottie animationData={deliveryAnimation} loop className="w-32 h-32 mx-auto mb-4" style={{ background: "transparent" }} />
-              <h3 className="text-xl font-bold text-white">
-                {listTab === "speaking" ? "No Voice Quests Found" : "No Quests Found"}
+              <h3 className="text-xl font-bold text-slate-800">
+                {listTab === "speaking" ? "No Voice Lessons Found" : "No Lessons Found"}
               </h3>
-              <p className="text-slate-400 text-sm mt-1">Try switching languages or tier filters above</p>
+              <p className="text-slate-500 text-sm mt-1">Try selecting a different language or level filter</p>
             </div>
           );
-          return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
-            {filtered.map((lesson, idx) => {
-              const isCompleted = completedIds.includes(lesson._id);
-              const isLocked = false;
-              const hasListening = lesson.content.some((c) => c.type === "listening");
-              const currentStyle = levelStyles[lesson.level] || levelStyles.beginner;
 
-              return (
-                <div
-                  key={lesson._id}
-                  className={`bg-slate-900/90 backdrop-blur-2xl rounded-3xl border border-slate-700/80 p-6 flex flex-col justify-between transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(6,182,212,0.25)] group relative overflow-hidden ${
-                    currentStyle.accentBorder
-                  }`}
-                  style={{ animation: `fadeInUp 0.4s ease ${(idx * 0.05).toFixed(2)}s both` }}
-                >
-                  {/* Top Glowing Tier Accent Bar */}
-                  <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${currentStyle.glowBar}`} />
+          const activeIndex = filtered.findIndex((l) => !completedIds.includes(l._id));
+          const currentActiveId = activeIndex !== -1 ? filtered[activeIndex]._id : filtered[0]?._id;
 
-                  {/* Card Header */}
-                  <div>
-                    <div className="flex items-start justify-between mb-4">
-                      {/* Quest Crest Icon */}
+          /* PATHWAY LADDER VIEW (INSPIRED BY USER IMAGE) */
+          if (viewMode === "path") {
+            return (
+              <div className="relative py-12 px-2 max-w-4xl mx-auto overflow-hidden">
+                {/* Center Ladder Rails */}
+                <div className="absolute top-8 bottom-8 left-1/2 -translate-x-1/2 w-16 sm:w-20 flex justify-between px-2 sm:px-3 pointer-events-none z-0">
+                  <div className="w-3 sm:w-3.5 h-full bg-gradient-to-b from-[#d8b4fe] via-[#c4b5fd] to-[#a78bfa] rounded-full shadow-[0_0_15px_rgba(196,181,253,0.7)] border border-white/50" />
+                  <div className="w-3 sm:w-3.5 h-full bg-gradient-to-b from-[#d8b4fe] via-[#c4b5fd] to-[#a78bfa] rounded-full shadow-[0_0_15px_rgba(196,181,253,0.7)] border border-white/50" />
+                </div>
+
+                {/* Vertical Nodes List */}
+                <div className="space-y-16 sm:space-y-20 relative z-10">
+                  {filtered.map((lesson, idx) => {
+                    const isCompleted = completedIds.includes(lesson._id);
+                    const isActive = lesson._id === currentActiveId && !isCompleted;
+                    const isLocked = !isCompleted && !isActive;
+                    const isLeft = idx % 2 === 0;
+
+                    return (
                       <div
-                        className={`w-12 h-12 rounded-2xl flex items-center justify-center border shadow-lg transition-transform duration-300 group-hover:scale-110 ${
+                        key={lesson._id}
+                        className="relative flex items-center justify-center min-h-[140px]"
+                        style={{ animation: `fadeInUp 0.4s ease ${(idx * 0.06).toFixed(2)}s both` }}
+                      >
+                        {/* Horizontal Rung Bar Across Rails */}
+                        <div className="absolute left-1/2 -translate-x-1/2 w-24 sm:w-28 h-3.5 sm:h-4 bg-white/95 backdrop-blur-md rounded-full shadow-md border border-white z-0 flex items-center justify-center" />
+
+                        {/* Center Milestone Badge */}
+                        <div className="relative z-20">
+                          {isCompleted ? (
+                            <button
+                              onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
+                              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#65a30d] to-[#84cc16] text-white flex items-center justify-center shadow-[0_4px_20px_rgba(132,204,22,0.65)] border-4 border-white hover:scale-110 active:scale-95 transition-all"
+                              title="Completed! Click to review"
+                            >
+                              <Check className="w-6 h-6 sm:w-7 sm:h-7 stroke-[3.5]" />
+                            </button>
+                          ) : isActive ? (
+                            <div className="relative">
+                              <button
+                                onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
+                                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-[#f59e0b] to-[#fbbf24] text-white flex items-center justify-center shadow-[0_0_25px_rgba(251,191,36,0.85)] border-4 border-white animate-bounce-subtle hover:scale-110 active:scale-95 transition-all"
+                                title="Current Lesson - Click to start!"
+                              >
+                                <Star className="w-7 h-7 sm:w-8 sm:h-8 fill-white stroke-white stroke-[2]" />
+                              </button>
+                              {/* Climber Character Avatar */}
+                              <div className="absolute -top-12 -right-10 sm:-right-12 w-14 h-18 sm:w-16 sm:h-20 pointer-events-none animate-wiggle">
+                                <ClimberAvatar className="w-full h-full drop-shadow-md" />
+                              </div>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
+                              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/90 backdrop-blur-md text-slate-400 flex items-center justify-center shadow-md border-4 border-white hover:scale-105 transition-all"
+                              title="Locked - Click to unlock"
+                            >
+                              <Lock className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2]" />
+                            </button>
+                          )}
+                        </div>
+
+                        {/* Connected Floating Lesson Card (Left / Right Layout) */}
+                        <div
+                          className={`w-full flex ${
+                            isLeft ? "justify-start md:pr-24" : "justify-end md:pl-24"
+                          } pointer-events-none`}
+                        >
+                          <div
+                            onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
+                            className={`pointer-events-auto w-[85%] sm:w-[320px] md:w-[360px] rounded-3xl p-5 sm:p-6 transition-all duration-300 transform hover:scale-[1.03] active:scale-95 cursor-pointer select-none ${
+                              isActive
+                                ? "bg-gradient-to-br from-[#6366f1] via-[#7c3aed] to-[#9333ea] text-white shadow-[0_20px_45px_rgba(124,58,237,0.4)] border-2 border-white/40 ring-4 ring-purple-400/20"
+                                : isCompleted
+                                ? "bg-white/95 backdrop-blur-2xl text-slate-900 shadow-[0_12px_32px_rgba(0,0,0,0.06)] border border-white hover:shadow-xl"
+                                : "bg-white/80 backdrop-blur-md text-slate-800 shadow-md border border-white/70 hover:bg-white/95 hover:shadow-lg opacity-90"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-2 mb-2">
+                              <h3
+                                className={`text-base sm:text-lg font-black tracking-tight ${
+                                  isActive ? "text-white drop-shadow" : "text-slate-900"
+                                }`}
+                              >
+                                {lesson.title}
+                              </h3>
+                              <span
+                                className={`text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border shrink-0 ${
+                                  isActive
+                                    ? "bg-white/20 text-white border-white/30"
+                                    : isCompleted
+                                    ? "bg-lime-50 text-lime-700 border-lime-200"
+                                    : "bg-slate-100 text-slate-600 border-slate-200"
+                                }`}
+                              >
+                                {lesson.level}
+                              </span>
+                            </div>
+
+                            <p
+                              className={`text-xs sm:text-sm line-clamp-2 leading-relaxed mb-4 ${
+                                isActive ? "text-purple-100" : "text-slate-600"
+                              }`}
+                            >
+                              {lesson.description}
+                            </p>
+
+                            <div className="flex items-center justify-between pt-2 border-t border-black/5 dark:border-white/10">
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={`text-xs font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 ${
+                                    isActive
+                                      ? "bg-white/20 text-white"
+                                      : "bg-slate-100 text-slate-600"
+                                  }`}
+                                >
+                                  <Globe className="w-3 h-3" />
+                                  {lesson.language}
+                                </span>
+                                <span
+                                  className={`text-xs font-black px-2 py-0.5 rounded-lg flex items-center gap-1 ${
+                                    isActive
+                                      ? "bg-amber-400 text-slate-950 shadow-sm"
+                                      : "bg-amber-50 text-amber-700 border border-amber-200"
+                                  }`}
+                                >
+                                  <Zap className="w-3 h-3 fill-current" />
+                                  +{lesson.xpReward} XP
+                                </span>
+                              </div>
+
+                              <span
+                                className={`text-xs font-extrabold uppercase tracking-wider flex items-center gap-1 ${
+                                  isActive
+                                    ? "text-yellow-300 group-hover:underline"
+                                    : isCompleted
+                                    ? "text-[#06555A]"
+                                    : "text-purple-600"
+                                }`}
+                              >
+                                {isActive ? "Continue →" : isCompleted ? "Review" : "Start"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          }
+
+          /* GRID VIEW */
+          return (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+              {filtered.map((lesson, idx) => {
+                const isCompleted = completedIds.includes(lesson._id);
+                const isLocked = false;
+                const hasListening = lesson.content.some((c) => c.type === "listening");
+
+                return (
+                  <div
+                    key={lesson._id}
+                    onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
+                    className="glass-card-light rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 transform hover:scale-[1.025] hover:shadow-2xl border border-white cursor-pointer group relative overflow-hidden"
+                    style={{ animation: `fadeInUp 0.4s ease ${(idx * 0.05).toFixed(2)}s both` }}
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div
+                        className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-md transition-transform group-hover:scale-110 ${
                           isCompleted
-                            ? "bg-amber-500/20 text-amber-300 border-amber-400/50 shadow-amber-950/50"
-                            : isLocked
-                            ? "bg-slate-800 text-slate-500 border-slate-700"
+                            ? "bg-lime-500 text-white shadow-lime-200"
                             : listTab === "speaking"
-                            ? "bg-emerald-500/20 text-emerald-300 border-emerald-400/50 shadow-emerald-950/50"
-                            : currentStyle.iconBg
+                            ? "bg-emerald-500 text-white shadow-emerald-200"
+                            : "bg-[#06555A] text-white shadow-teal-200"
                         }`}
                       >
                         {isCompleted ? (
-                          <CheckCircle2 className="w-6 h-6 text-amber-400" />
+                          <CheckCircle2 className="w-6 h-6" />
                         ) : isLocked ? (
-                          <Lock className="w-6 h-6 text-slate-500" />
+                          <Lock className="w-6 h-6" />
                         ) : listTab === "speaking" ? (
-                          <Mic className="w-6 h-6 text-emerald-400" />
+                          <Mic className="w-6 h-6" />
                         ) : (
-                          <BookOpen className="w-6 h-6 text-cyan-400" />
+                          <BookOpen className="w-6 h-6" />
                         )}
                       </div>
-
-                      {/* Badges / Tier */}
                       <div className="flex items-center gap-2">
                         {hasListening && listTab !== "speaking" && (
-                          <span className="px-2.5 py-1 rounded-xl text-xs font-black bg-purple-500/15 text-purple-300 border border-purple-400/30 flex items-center gap-1 shadow-sm">
-                            <Headphones className="w-3 h-3" /> AUDIO
+                          <span className="px-2.5 py-1 rounded-xl text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200 flex items-center gap-1 shadow-sm">
+                            <Headphones className="w-3 h-3" /> Voice
                           </span>
                         )}
-                        <span className={`px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider border shadow-sm ${currentStyle.badge}`}>
-                          {currentStyle.tierLabel}
+                        <span className="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider border shadow-sm bg-slate-100 text-slate-700 border-slate-200">
+                          {lesson.level}
                         </span>
                       </div>
                     </div>
 
-                    {/* Quest Title & Lore */}
-                    <h3 className="font-black text-white text-lg tracking-tight group-hover:text-cyan-300 transition-colors drop-shadow-sm mb-1.5">
+                    <h3 className="font-extrabold text-slate-900 mb-1 text-lg group-hover:text-[#06555A] transition-colors">
                       {lesson.title}
                     </h3>
-                    <p className="text-xs font-medium text-slate-300 line-clamp-2 leading-relaxed mb-4">
+                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-4">
                       {lesson.description}
                     </p>
 
-                    {/* Skill Loot Modules */}
-                    {listTab !== "speaking" && (
-                      <div className="flex gap-2 flex-wrap mb-4">
-                        {Array.from(new Set(lesson.content.map((c) => c.type).filter((t) => t !== "speaking"))).map((t) => (
-                          <span 
-                            key={t} 
-                            className="text-xs px-2.5 py-1 rounded-xl bg-slate-800/90 border border-slate-700/80 text-slate-200 font-bold capitalize shadow-sm flex items-center gap-1.5"
-                          >
-                            <span>{typeIcons[t]}</span>
-                            <span>{t}</span>
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {listTab === "speaking" && (
-                      <div className="flex gap-2 flex-wrap mb-4">
-                        <span className="text-xs px-3 py-1 rounded-xl bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 font-bold shadow-sm flex items-center gap-1.5">
-                          <span>🎙️</span>
-                          <span>{lesson.content.filter((c) => c.type === "speaking").length} Voice Challenges</span>
+                    <div className="flex items-center justify-between mt-auto pt-3 border-t border-slate-100">
+                      <div className="flex items-center gap-2">
+                        <span className="flex items-center gap-1 text-xs font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-lg">
+                          <Globe className="w-3 h-3" />
+                          {lesson.language}
+                        </span>
+                        <span className="flex items-center gap-1 text-xs font-black text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg">
+                          <Zap className="w-3 h-3 text-amber-500" />
+                          +{lesson.xpReward} XP
                         </span>
                       </div>
-                    )}
-                  </div>
 
-                  {/* Card Footer Loot & CTA */}
-                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-800/80">
-                    <div className="flex items-center gap-2">
-                      <span className="flex items-center gap-1 text-xs font-bold text-slate-400 bg-slate-800/70 border border-slate-700 px-2 py-1 rounded-lg">
-                        <Globe className="w-3 h-3 text-cyan-400" />
-                        {lesson.language}
-                      </span>
-                      <span className="flex items-center gap-1 text-xs font-black text-amber-300 bg-amber-500/15 border border-amber-400/30 px-2.5 py-1 rounded-lg shadow-inner">
-                        <Zap className="w-3 h-3 text-amber-400" />
-                        +{lesson.xpReward} XP
-                      </span>
-                    </div>
-
-                    {!isLocked && (
                       <button
-                        onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
-                        className={`flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider px-4 py-2 rounded-xl transition-all duration-200 shadow-md ${
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          startLesson(lesson, listTab === "speaking" ? "speaking" : "main");
+                        }}
+                        className={`flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider px-4 py-2 rounded-xl transition shadow-md ${
                           isCompleted
-                            ? "bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/40 hover:border-amber-400/80 shadow-amber-950/40"
+                            ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
                             : listTab === "speaking"
-                            ? "bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white shadow-emerald-950/60 hover:scale-105 active:scale-95"
-                            : "bg-gradient-to-r from-[#06555A] to-[#0ea5e9] hover:from-[#08737a] hover:to-[#38bdf8] text-white shadow-cyan-950/60 hover:scale-105 active:scale-95"
+                            ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                            : "bg-[#06555A] hover:bg-[#054347] text-white"
                         }`}
                       >
-                        {isCompleted ? (
-                          <>
-                            <RotateCcw className="w-3.5 h-3.5" />
-                            <span>Review</span>
-                          </>
-                        ) : listTab === "speaking" ? (
-                          <>
-                            <Mic className="w-3.5 h-3.5" />
-                            <span>Practise</span>
-                          </>
-                        ) : (
-                          <>
-                            <Sparkles className="w-3.5 h-3.5" />
-                            <span>Start Quest</span>
-                          </>
-                        )}
+                        {isCompleted ? "Review" : listTab === "speaking" ? "Practise" : "Start"}
                       </button>
-                    )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
           );
         })()}
       
