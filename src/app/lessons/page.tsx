@@ -656,43 +656,43 @@ function LessonsContent() {
       <DashboardLayout>
         <div className="max-w-2xl mx-auto">
           {phase !== "done" ? (
-            <div>
+            <div className="glass-card-light rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/90">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setActiveLesson(null)}
-                    className="w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
+                    className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200/80 flex items-center justify-center transition shadow-sm"
                   >
-                    <X className="w-4 h-4 text-gray-600" />
+                    <X className="w-4 h-4 text-slate-600" />
                   </button>
                   <div>
-                    <h2 className="font-bold text-gray-900">{activeLesson.title}</h2>
-                    <p className="text-xs text-gray-500">{activeLesson.language}</p>
+                    <h2 className="font-extrabold text-slate-900 text-lg leading-tight">{activeLesson.title}</h2>
+                    <p className="text-xs font-semibold text-slate-500">{activeLesson.language}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-sm font-semibold text-gray-500">
+                  <span className="text-xs font-bold text-slate-500 bg-white/80 border border-slate-100 px-2.5 py-1 rounded-full shadow-sm">
                     {quizIndex + 1} / {phaseContent.length}
                   </span>
                   {currentQuestion?.type === "listening" && (
-                    <p className="text-xs text-[#3D8F8F] font-medium flex items-center justify-end gap-1 mt-0.5">
-                      <Volume2 className="w-3 h-3" /> Listening
+                    <p className="text-xs text-purple-700 font-bold flex items-center justify-end gap-1 mt-1.5">
+                      <Volume2 className="w-3.5 h-3.5" /> Listening Lab
                     </p>
                   )}
                   {currentQuestion?.type === "speaking" && (
-                    <p className="text-xs text-green-600 font-medium flex items-center justify-end gap-1 mt-0.5">
-                      <Mic className="w-3 h-3" /> Speak Practice
+                    <p className="text-xs text-emerald-700 font-bold flex items-center justify-end gap-1 mt-1.5">
+                      <Mic className="w-3.5 h-3.5" /> Speech Verification
                     </p>
                   )}
                 </div>
               </div>
 
               {/* Progress bar */}
-              <div className="w-full bg-gray-100 rounded-full h-2 mb-8">
+              <div className="w-full bg-slate-100/80 rounded-full h-2 mb-8 overflow-hidden p-0.5 border border-slate-200/50">
                 <div
-                  className={`h-2 rounded-full transition-all ${
-                    phase === "speaking" ? "bg-green-500" : "bg-[#3D8F8F]"
+                  className={`h-full rounded-full transition-all duration-300 ${
+                    phase === "speaking" ? "bg-emerald-500" : "bg-slate-950"
                   }`}
                   style={{ width: `${((quizIndex + 1) / phaseContent.length) * 100}%` }}
                 />
@@ -728,17 +728,17 @@ function LessonsContent() {
 
                   {showResult && currentQuestion.explanation && currentQuestion.type !== "speaking" && (
                     <div
-                      className={`mt-4 p-4 rounded-2xl text-sm font-medium ${
+                      className={`mt-5 p-4 rounded-2xl text-xs sm:text-sm font-medium leading-relaxed ${
                         selectedAnswer === currentQuestion.correctAnswer
-                          ? "bg-[#d0eaeb] text-[#06555A] border border-[#6FB3B8]/40"
-                          : "bg-red-50 text-red-800 border border-red-200"
+                          ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                          : "bg-rose-50 text-rose-800 border border-rose-200"
                       }`}
                     >
                       💡 {currentQuestion.explanation}
                     </div>
                   )}
                   {showResult && currentQuestion.explanation && currentQuestion.type === "speaking" && (
-                    <div className="mt-4 p-4 rounded-2xl text-sm font-medium bg-[#d0eaeb] text-[#06555A] border border-[#6FB3B8]/40">
+                    <div className="mt-5 p-4 rounded-2xl text-xs sm:text-sm font-medium leading-relaxed bg-emerald-50 text-emerald-800 border border-emerald-200">
                       💡 {currentQuestion.explanation}
                     </div>
                   )}
@@ -746,76 +746,76 @@ function LessonsContent() {
                   {showResult && (
                     <button
                       onClick={handleNext}
-                      className={`w-full mt-6 text-white font-bold py-4 rounded-2xl transition shadow-md ${
+                      className={`w-full mt-6 text-white font-extrabold py-3.5 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm ${
                         phase === "speaking"
-                          ? "bg-green-500 hover:bg-emerald-600 shadow-green-200"
-                          : "bg-[#3D8F8F] hover:bg-[#06555A] shadow-[#6FB3B8]/30"
+                          ? "bg-emerald-600 hover:bg-emerald-700"
+                          : "bg-slate-950 hover:bg-slate-800"
                       }`}
                     >
-                      {quizIndex >= phaseContent.length - 1 ? "Finish" : "Next →"}
+                      {quizIndex >= phaseContent.length - 1 ? "Complete Lesson" : "Continue Next Question →"}
                     </button>
                   )}
                 </div>
               )}
             </div>
           ) : (
-            <div className="text-center py-12">
+            <div className="glass-card-light rounded-3xl p-8 sm:p-12 text-center shadow-2xl border border-white/90">
               <div className="flex justify-center">
-                <Lottie animationData={treeAnimation} loop className="w-48 h-48" style={{ background: "transparent" }} />
+                <Lottie animationData={treeAnimation} loop className="w-44 h-44" style={{ background: "transparent" }} />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                {listTab === "speaking" ? "Speaking Practice Done! 🎉" : "Lesson Complete! 🎉"}
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">
+                {listTab === "speaking" ? "Speaking Lab Completed! 🎉" : "Lesson Completed! 🎉"}
               </h2>
 
               {/* Score card */}
-              <div className="flex gap-3 justify-center mb-5">
+              <div className="flex gap-4 justify-center my-6">
                 {listTab !== "speaking" && (
-                  <div className="bg-[#d0eaeb] border border-[#6FB3B8]/40 rounded-2xl px-8 py-5 text-center">
-                    <p className="text-xs font-bold text-[#3D8F8F] uppercase tracking-wide mb-1">📚 Score</p>
-                    <p className="text-3xl font-bold text-[#06555A]">{score}<span className="text-lg font-semibold text-gray-400"> / {mainContent.length}</span></p>
+                  <div className="bg-white/90 border border-slate-200/80 rounded-2xl px-8 py-4 text-center shadow-sm">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">📚 Lesson Score</p>
+                    <p className="text-3xl font-extrabold text-slate-900">{score}<span className="text-lg font-semibold text-slate-400"> / {mainContent.length}</span></p>
                   </div>
                 )}
                 {listTab === "speaking" && (
-                  <div className="bg-green-50 border border-green-200 rounded-2xl px-8 py-5 text-center">
-                    <p className="text-xs font-bold text-green-600 uppercase tracking-wide mb-1">🎤 Speaking Score</p>
-                    <p className="text-3xl font-bold text-green-700">{speakScore}<span className="text-lg font-semibold text-gray-400"> / {speakContent.length}</span></p>
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-2xl px-8 py-4 text-center shadow-sm">
+                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">🎤 Speaking Score</p>
+                    <p className="text-3xl font-extrabold text-emerald-800">{speakScore}<span className="text-lg font-semibold text-emerald-400"> / {speakContent.length}</span></p>
                   </div>
                 )}
               </div>
 
-              <p className="text-gray-400 text-sm mb-6">
+              <p className="text-slate-600 text-xs sm:text-sm mb-6 max-w-sm mx-auto">
                 {listTab === "speaking"
-                  ? speakScore === speakContent.length ? "Perfect! All phrases spoken correctly! 🎉" : speakScore >= speakContent.length / 2 ? "Good effort! Keep practising." : "Keep going — practice makes perfect!"
-                  : score === mainContent.length ? "Perfect score! 🎉" : score >= mainContent.length / 2 ? "Great job! Keep practising." : "Keep going — practice makes perfect!"}
+                  ? speakScore === speakContent.length ? "Outstanding fluency! All phrases verified accurately! 🎉" : speakScore >= speakContent.length / 2 ? "Great effort! Regular practice builds automaticity." : "Keep speaking — practice makes perfect!"
+                  : score === mainContent.length ? "Flawless score! Exceptional mastery! 🎉" : score >= mainContent.length / 2 ? "Well done! Steady practice builds lasting intuition." : "Keep going — review mistakes to reinforce understanding!"}
               </p>
               <div className="flex items-center justify-center gap-4 mb-8">
-                <div className="flex items-center gap-2 text-yellow-600 font-bold text-lg">
-                  <Star className="w-6 h-6 text-yellow-500" />
+                <div className="flex items-center gap-1.5 text-amber-600 font-extrabold text-base bg-amber-50 border border-amber-200 px-4 py-1.5 rounded-full shadow-sm">
+                  <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
                   +{activeLesson.xpReward} XP earned
                 </div>
-                <div className="flex items-center gap-2 text-amber-600 font-bold text-lg">
-                  <span className="text-xl">🪙</span>
+                <div className="flex items-center gap-1.5 text-amber-700 font-extrabold text-base bg-yellow-50 border border-yellow-200 px-4 py-1.5 rounded-full shadow-sm">
+                  <span className="text-lg">🪙</span>
                   +{Math.max(5, Math.ceil(activeLesson.xpReward / 10))} coins
                 </div>
               </div>
               <div className="flex gap-3 justify-center flex-wrap">
                 <button
                   onClick={() => startLesson(activeLesson, listTab === "speaking" ? "speaking" : "main")}
-                  className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-2xl transition flex items-center gap-2"
+                  className="px-6 py-2.5 glass-pill hover:bg-white text-slate-800 font-bold rounded-full transition flex items-center gap-2 text-xs sm:text-sm shadow-sm"
                 >
-                  <RotateCcw className="w-4 h-4" /> Try Again
+                  <RotateCcw className="w-3.5 h-3.5 text-[#06555A]" /> Try Again
                 </button>
                 <button
                   onClick={() => setActiveLesson(null)}
-                  className="px-6 py-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold rounded-2xl transition"
+                  className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-bold rounded-full transition text-xs sm:text-sm shadow-sm"
                 >
                   Back to Lessons
                 </button>
                 <button
                   onClick={() => router.push("/dashboard")}
-                  className="px-6 py-3 bg-[#3D8F8F] hover:bg-[#06555A] text-white font-bold rounded-2xl transition shadow-md shadow-[#6FB3B8]/30"
+                  className="px-6 py-2.5 bg-slate-950 hover:bg-slate-800 text-white font-bold rounded-full transition shadow-md hover:shadow-lg text-xs sm:text-sm"
                 >
-                  Go to Dashboard
+                  Dashboard
                 </button>
               </div>
             </div>
@@ -827,83 +827,87 @@ function LessonsContent() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">Lessons</h1>
-          <p className="text-gray-500">
-            {user?.role === "professional"
-              ? "Professional language courses tailored for business"
-              : "Learn at your own pace, one lesson at a time"}
-          </p>
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-2.5 tracking-tight">
+              <span className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-[#06555A] to-[#0A7A82] text-white flex items-center justify-center shadow">
+                <BookOpen className="w-5 h-5" />
+              </span>
+              Curated Lessons
+            </h1>
+            <p className="text-slate-600 text-xs sm:text-sm mt-1">
+              {user?.role === "professional"
+                ? "Professional language modules tailored for international business"
+                : "Step-by-step interactive language courses with AI speech verification"}
+            </p>
+          </div>
+
+          {/* Top-level tabs */}
+          <div className="flex gap-2 glass-pill p-1.5 rounded-full shadow-sm">
+            <button
+              onClick={() => setListTab("lessons")}
+              className={`flex items-center gap-2 px-5 py-2 rounded-full font-bold text-xs sm:text-sm transition ${
+                listTab === "lessons"
+                  ? "bg-slate-950 text-white shadow"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+              }`}
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              Standard Lessons
+            </button>
+            <button
+              onClick={() => setListTab("speaking")}
+              className={`flex items-center gap-2 px-5 py-2 rounded-full font-bold text-xs sm:text-sm transition ${
+                listTab === "speaking"
+                  ? "bg-emerald-600 text-white shadow"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+              }`}
+            >
+              <Mic className="w-3.5 h-3.5" />
+              Speech Lab
+            </button>
+          </div>
         </div>
 
-        {/* Top-level tabs */}
-        <div className="flex gap-3 mb-6">
-          <button
-            onClick={() => setListTab("lessons")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm transition border-2 ${
-              listTab === "lessons"
-                ? "bg-[#3D8F8F] text-white border-[#3D8F8F] shadow-md shadow-[#6FB3B8]/30"
-                : "bg-white text-gray-500 border-gray-200 hover:border-[#6FB3B8]"
-            }`}
-          >
-            <BookOpen className="w-4 h-4" />
-            Lessons
-          </button>
-          <button
-            onClick={() => setListTab("speaking")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm transition border-2 ${
-              listTab === "speaking"
-                ? "bg-green-500 text-white border-green-500 shadow-md shadow-green-200"
-                : "bg-white text-gray-500 border-gray-200 hover:border-green-400"
-            }`}
-          >
-            <Mic className="w-4 h-4" />
-            Speak Practice
-          </button>
-        </div>
-
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mb-6">
-          <div className="flex flex-wrap gap-4 items-center">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-600">
-              <Filter className="w-4 h-4" />
-              Filter:
+        {/* Filter bar */}
+        <div className="glass-card-light rounded-3xl p-4 sm:p-5 mb-6 shadow-md border border-white/80">
+          <div className="flex flex-wrap gap-6 items-center">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-700 uppercase tracking-wider">
+              <Filter className="w-4 h-4 text-[#06555A]" />
+              Filter By:
             </div>
-            <div>
-              <p className="text-xs text-gray-400 mb-1.5 font-medium">Language</p>
-              <div className="flex gap-2 flex-wrap">
-                {LANGUAGES.map((lang) => (
-                  <button
-                    key={lang}
-                    onClick={() => setSelectedLanguage(lang)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                      selectedLanguage === lang
-                        ? "bg-[#3D8F8F] text-white"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
-                  >
-                    {lang}
-                  </button>
-                ))}
-              </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs text-slate-500 font-semibold mr-1">Language:</span>
+              {LANGUAGES.map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => setSelectedLanguage(lang)}
+                  className={`px-3 py-1 rounded-full text-xs font-bold transition ${
+                    selectedLanguage === lang
+                      ? "bg-slate-950 text-white shadow-sm"
+                      : "glass-pill text-slate-600 hover:bg-white hover:text-slate-900"
+                  }`}
+                >
+                  {lang}
+                </button>
+              ))}
             </div>
-            <div>
-              <p className="text-xs text-gray-400 mb-1.5 font-medium">Level</p>
-              <div className="flex gap-2 flex-wrap">
-                {LEVELS.map((level) => (
-                  <button
-                    key={level}
-                    onClick={() => setSelectedLevel(level)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition ${
-                      selectedLevel === level
-                        ? "bg-[#3D8F8F] text-white"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
-                  >
-                    {level}
-                  </button>
-                ))}
-              </div>
+            <div className="flex items-center gap-2 flex-wrap ml-auto">
+              <span className="text-xs text-slate-500 font-semibold mr-1">Level:</span>
+              {LEVELS.map((level) => (
+                <button
+                  key={level}
+                  onClick={() => setSelectedLevel(level)}
+                  className={`px-3 py-1 rounded-full text-xs font-bold capitalize transition ${
+                    selectedLevel === level
+                      ? "bg-[#06555A] text-white shadow-sm"
+                      : "glass-pill text-slate-600 hover:bg-white hover:text-slate-900"
+                  }`}
+                >
+                  {level}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -911,8 +915,8 @@ function LessonsContent() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 animate-fade-in">
             <Lottie animationData={treeAnimation} loop className="w-24 h-24 mb-4" style={{ background: "transparent" }} />
-            <div className="w-10 h-10 border-4 border-[#3D8F8F] border-t-transparent rounded-full animate-spin" />
-            <span className="mt-2 text-gray-400 text-sm">Loading lessons...</span>
+            <div className="w-10 h-10 border-4 border-[#06555A] border-t-transparent rounded-full animate-spin" />
+            <span className="mt-2 text-slate-500 text-sm font-medium">Loading lessons...</span>
           </div>
         ) : (() => {
           const filtered = lessons.filter((l) =>
@@ -921,12 +925,12 @@ function LessonsContent() {
               : l.content.some((c) => c.type !== "speaking")
           );
           if (filtered.length === 0) return (
-            <div className="text-center py-20 animate-fade-in">
+            <div className="glass-card-light rounded-3xl p-12 text-center my-6">
               <Lottie animationData={deliveryAnimation} loop className="w-32 h-32 mx-auto mb-4" style={{ background: "transparent" }} />
-              <h3 className="text-lg font-semibold text-gray-400">
-                {listTab === "speaking" ? "No speak practice lessons yet" : "No lessons found"}
+              <h3 className="text-lg font-bold text-slate-800">
+                {listTab === "speaking" ? "No speak practice lessons found" : "No lessons found for these filters"}
               </h3>
-              <p className="text-gray-400 text-sm mt-1">Try changing the filters above</p>
+              <p className="text-slate-500 text-xs mt-1">Try selecting another language or level above</p>
             </div>
           );
           return (
@@ -938,49 +942,51 @@ function LessonsContent() {
               return (
                 <div
                   key={lesson._id}
-                  className={`bg-white rounded-3xl border shadow-sm p-6 flex flex-col transition-all duration-200 transform hover:scale-[1.025] hover:shadow-xl group relative overflow-hidden ${
-                    listTab === "speaking" ? "hover:border-green-300" : "hover:border-[#4dd0e1]"
-                  } ${
-                    isLocked ? "opacity-60 border-gray-100" : "border-gray-100"
-                  }`}
+                  className="glass-card-light rounded-3xl p-6 flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl group relative overflow-hidden border border-white/80"
                   style={{ animation: `fadeInUp 0.5s ease ${(idx * 0.07).toFixed(2)}s both` }}
                 >
-                  <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start justify-between mb-4">
                     <div
-                      className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-sm ${
-                        isCompleted ? "bg-[#e0f7fa]" : isLocked ? "bg-gray-100" :
-                        listTab === "speaking" ? "bg-green-50" : "bg-[#e0f7fa]/60"
+                      className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm ${
+                        isCompleted ? "bg-emerald-100 text-emerald-700" :
+                        listTab === "speaking" ? "bg-emerald-50 text-emerald-600" : "bg-teal-50 text-[#06555A]"
                       }`}
                     >
                       {isCompleted ? (
-                        <CheckCircle2 className="w-6 h-6 text-[#00796b]" />
+                        <CheckCircle2 className="w-6 h-6" />
                       ) : isLocked ? (
-                        <Lock className="w-6 h-6 text-gray-400" />
+                        <Lock className="w-6 h-6 text-slate-400" />
                       ) : listTab === "speaking" ? (
-                        <Mic className="w-6 h-6 text-green-500" />
+                        <Mic className="w-6 h-6" />
                       ) : (
-                        <BookOpen className="w-6 h-6 text-[#4dd0e1]" />
+                        <BookOpen className="w-6 h-6" />
                       )}
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                       {hasListening && listTab !== "speaking" && (
-                        <span className="px-2 py-1 rounded-lg text-xs font-bold bg-[#ede7f6] text-[#7e57c2] border border-[#b39ddb] flex items-center gap-1 shadow-sm">
+                        <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-purple-100/80 text-purple-700 border border-purple-200 flex items-center gap-1 shadow-sm">
                           <Headphones className="w-3 h-3" /> Voice
                         </span>
                       )}
-                      <span className={`px-2.5 py-1 rounded-lg text-xs font-bold border capitalize shadow-sm ${levelColors[lesson.level]}`}>
+                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold border capitalize shadow-sm ${
+                        lesson.level === "advanced"
+                          ? "bg-purple-100/80 text-purple-700 border-purple-200"
+                          : lesson.level === "intermediate"
+                          ? "bg-amber-100/80 text-amber-700 border-amber-200"
+                          : "bg-teal-100/80 text-teal-700 border-teal-200"
+                      }`}>
                         {lesson.level}
                       </span>
                     </div>
                   </div>
 
-                  <h3 className="font-bold text-gray-900 mb-1 text-lg group-hover:text-[#00796b] transition-colors duration-150">{lesson.title}</h3>
-                  <p className="text-sm text-gray-500 flex-1 mb-4 line-clamp-2">{lesson.description}</p>
+                  <h3 className="font-bold text-slate-900 mb-1.5 text-lg group-hover:text-[#06555A] transition-colors">{lesson.title}</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 flex-1 mb-4 line-clamp-2 leading-relaxed">{lesson.description}</p>
 
                   {listTab !== "speaking" && (
-                    <div className="flex gap-2 flex-wrap mb-4">
+                    <div className="flex gap-1.5 flex-wrap mb-4">
                       {Array.from(new Set(lesson.content.map((c) => c.type).filter((t) => t !== "speaking"))).map((t) => (
-                        <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-[#f1f8e9] text-[#689f38] font-medium capitalize shadow-sm">
+                        <span key={t} className="text-[11px] px-2.5 py-0.5 rounded-full bg-slate-100/80 text-slate-700 font-semibold capitalize border border-slate-200/50">
                           {typeIcons[t]} {t}
                         </span>
                       ))}
@@ -988,32 +994,32 @@ function LessonsContent() {
                   )}
                   {listTab === "speaking" && (
                     <div className="flex gap-2 flex-wrap mb-4">
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-700 font-medium shadow-sm">
-                        🎤 {lesson.content.filter((c) => c.type === "speaking").length} phrase{lesson.content.filter((c) => c.type === "speaking").length !== 1 ? "s" : ""} to practise
+                      <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-100/80 text-emerald-800 font-bold border border-emerald-200">
+                        🎤 {lesson.content.filter((c) => c.type === "speaking").length} phrase{lesson.content.filter((c) => c.type === "speaking").length !== 1 ? "s" : ""} to speak
                       </span>
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between mt-auto">
-                    <div className="flex items-center gap-3 text-xs text-gray-400">
+                  <div className="flex items-center justify-between mt-auto pt-3 border-t border-slate-100/80">
+                    <div className="flex items-center gap-3 text-xs font-semibold text-slate-500">
                       <span className="flex items-center gap-1">
-                        <Globe className="w-3.5 h-3.5" />
+                        <Globe className="w-3.5 h-3.5 text-[#06555A]" />
                         {lesson.language}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Zap className="w-3.5 h-3.5 text-yellow-500" />
+                        <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                         {lesson.xpReward} XP
                       </span>
                     </div>
                     {!isLocked && (
                       <button
                         onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
-                        className={`flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-lg transition shadow-sm ${
+                        className={`flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-full transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${
                           isCompleted
-                            ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
                             : listTab === "speaking"
-                            ? "bg-gradient-to-r from-green-400 to-emerald-600 hover:from-emerald-600 hover:to-green-700 text-white"
-                            : "bg-gradient-to-r from-[#4dd0e1] to-[#00796b] hover:from-[#00796b] hover:to-[#4dd0e1] text-white"
+                            ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                            : "bg-slate-950 hover:bg-slate-800 text-white"
                         }`}
                       >
                         {listTab === "speaking" ? <Mic className="w-3.5 h-3.5" /> : <BookOpen className="w-3.5 h-3.5" />}
@@ -1021,9 +1027,6 @@ function LessonsContent() {
                       </button>
                     )}
                   </div>
-
-                  {/* Decorative gradient blob */}
-                  <div className="absolute -top-8 -right-8 w-24 h-24 bg-gradient-to-br from-[#e0f7fa] to-[#b39ddb] opacity-20 rounded-full blur-2xl pointer-events-none z-0" />
                 </div>
               );
             })}

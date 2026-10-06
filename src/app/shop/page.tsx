@@ -183,114 +183,120 @@ export default function ShopPage() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
 
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">Shop</h1>
-          <p className="text-gray-500">Buy coins with real money, then spend coins to boost your XP.</p>
+        <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-2.5 tracking-tight">
+              <span className="w-9 h-9 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center shadow">
+                <Coins className="w-5 h-5" />
+              </span>
+              TransLang Treasury &amp; Shop
+            </h1>
+            <p className="text-slate-600 text-xs sm:text-sm mt-1">Acquire coins &amp; activate instant XP boosters for your fluency progression</p>
+          </div>
         </div>
 
         {/* Balance strip */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="flex items-center gap-3 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-2xl p-4 text-white shadow-md">
-            <div className="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-              <Coins className="w-6 h-6 text-white" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div className="glass-card-light rounded-3xl p-5 border border-white/80 shadow-md flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-100/80 text-amber-600 flex items-center justify-center flex-shrink-0 shadow-sm text-2xl">
+              🪙
             </div>
             <div>
-              <p className="text-xs font-semibold text-white/80 uppercase tracking-wide">Coins</p>
-              <p className="text-3xl font-extrabold leading-tight">{coins}</p>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Coin Reserve</p>
+              <p className="text-3xl font-extrabold text-slate-900 leading-tight">{coins}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 bg-gradient-to-r from-[#3D8F8F] to-[#06555A] rounded-2xl p-4 text-white shadow-md">
-            <div className="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-              <Star className="w-6 h-6 text-white" />
+          <div className="glass-card-light rounded-3xl p-5 border border-white/80 shadow-md flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-teal-100/80 text-[#06555A] flex items-center justify-center flex-shrink-0 shadow-sm">
+              <Star className="w-6 h-6 text-[#06555A] fill-[#06555A]" />
             </div>
             <div>
-              <p className="text-xs font-semibold text-white/80 uppercase tracking-wide">Total XP</p>
-              <p className="text-3xl font-extrabold leading-tight">{xp}</p>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Experience (XP)</p>
+              <p className="text-3xl font-extrabold text-slate-900 leading-tight">{xp}</p>
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-fit">
+        <div className="flex gap-2 mb-6 glass-pill p-1.5 rounded-full shadow-sm w-fit">
           <button
             onClick={() => setTab("coins")}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all ${
-              tab === "coins" ? "bg-white shadow text-gray-900" : "text-gray-500 hover:text-gray-700"
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-xs sm:text-sm transition-all ${
+              tab === "coins" ? "bg-slate-950 text-white shadow" : "text-slate-600 hover:text-slate-900"
             }`}
           >
             <CreditCard className="w-4 h-4" />
-            Buy Coins
+            Acquire Coins
           </button>
           <button
             onClick={() => setTab("xp")}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all ${
-              tab === "xp" ? "bg-white shadow text-gray-900" : "text-gray-500 hover:text-gray-700"
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-xs sm:text-sm transition-all ${
+              tab === "xp" ? "bg-slate-950 text-white shadow" : "text-slate-600 hover:text-slate-900"
             }`}
           >
-            <Zap className="w-4 h-4" />
-            Spend Coins → XP
+            <Zap className="w-4 h-4 text-amber-400" />
+            Convert Coins → XP Boosts
           </button>
         </div>
 
         {/* ── BUY COINS tab ────────────────────────────────────────────────────── */}
         {tab === "coins" && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {coinPackages.map((pkg) => {
-                const meta = COIN_META[pkg.id] ?? { label: pkg.id, description: "", color: "from-gray-400 to-gray-500" };
+                const meta = COIN_META[pkg.id] ?? { label: pkg.id, description: "", color: "from-amber-400 to-yellow-500" };
                 const isLoading = purchasing === pkg.id;
 
                 return (
                   <div
                     key={pkg.id}
-                    className="relative bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+                    className="relative glass-card-light rounded-3xl border border-white/80 shadow-md overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                   >
-                    <div className={`h-2 w-full bg-gradient-to-r ${meta.color}`} />
-                    <div className="p-5">
+                    <div className="p-6">
                       {meta.badge && (
-                        <span className={`absolute top-4 right-4 text-xs font-bold px-2.5 py-1 rounded-full bg-gradient-to-r ${meta.color} text-white shadow-sm`}>
+                        <span className="absolute top-5 right-5 text-[10px] font-extrabold px-3 py-1 rounded-full bg-slate-950 text-amber-400 border border-white/20 shadow-sm uppercase tracking-wider">
                           {meta.badge}
                         </span>
                       )}
 
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-2xl select-none">
+                      <div className="flex items-center gap-3.5 mb-5">
+                        <div className="w-14 h-14 rounded-2xl bg-amber-100/80 flex items-center justify-center text-3xl select-none shadow-sm">
                           🪙
                         </div>
                         <div>
-                          <h3 className="font-bold text-gray-900 text-lg leading-tight">{meta.label}</h3>
-                          <p className="text-sm text-gray-500">{meta.description}</p>
+                          <h3 className="font-extrabold text-slate-900 text-lg leading-tight">{meta.label}</h3>
+                          <p className="text-xs text-slate-500 mt-0.5">{meta.description}</p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between mb-5">
-                        <div className="flex items-center gap-1.5">
+                      <div className="flex items-center justify-between mb-6 p-4 rounded-2xl bg-white/70 border border-slate-100">
+                        <div className="flex items-center gap-2">
                           <Coins className="w-5 h-5 text-amber-500" />
-                          <span className="text-2xl font-extrabold text-gray-900">{pkg.coins}</span>
-                          <span className="text-sm text-gray-400 font-medium">coins</span>
+                          <span className="text-2xl font-black text-slate-900">{pkg.coins}</span>
+                          <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">coins</span>
                         </div>
                         <div className="text-right">
-                          <p className="text-xl font-extrabold text-gray-900">₹{pkg.priceINR}</p>
-                          <p className="text-xs text-gray-400">one-time</p>
+                          <p className="text-xl font-black text-slate-900">₹{pkg.priceINR}</p>
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Secure Razorpay</p>
                         </div>
                       </div>
 
                       <button
                         onClick={() => handleBuyCoins(pkg)}
                         disabled={!!purchasing}
-                        className={`w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-150 ${
+                        className={`w-full py-3.5 rounded-full font-extrabold text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg ${
                           !purchasing
-                            ? `bg-gradient-to-r ${meta.color} text-white hover:opacity-90 shadow-sm`
-                            : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            ? "bg-slate-950 hover:bg-slate-800 text-white hover:-translate-y-0.5"
+                            : "bg-slate-200 text-slate-400 cursor-not-allowed"
                         }`}
                       >
                         {isLoading ? (
-                          <><Loader2 className="w-4 h-4 animate-spin" /> Processing…</>
+                          <><Loader2 className="w-4 h-4 animate-spin" /> Authorizing…</>
                         ) : (
-                          <><ShoppingCart className="w-4 h-4" /> Buy for ₹{pkg.priceINR}</>
+                          <><ShoppingCart className="w-4 h-4" /> Purchase for ₹{pkg.priceINR}</>
                         )}
                       </button>
                     </div>
@@ -303,64 +309,63 @@ export default function ShopPage() {
 
         {/* ── SPEND COINS → XP tab ─────────────────────────────────────────────── */}
         {tab === "xp" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {xpPackages.map((pkg) => {
-              const meta = XP_META[pkg.id] ?? { label: pkg.id, description: "", color: "from-gray-400 to-gray-500", iconBg: "bg-gray-100 text-gray-600" };
+              const meta = XP_META[pkg.id] ?? { label: pkg.id, description: "", color: "from-teal-400 to-emerald-500", iconBg: "bg-teal-100 text-[#06555A]" };
               const canAfford = coins >= pkg.coins;
               const isLoading = purchasing === pkg.id;
 
               return (
                 <div
                   key={pkg.id}
-                  className={`relative bg-white rounded-2xl border shadow-sm overflow-hidden transition-all duration-200 ${
-                    canAfford ? "border-gray-200 hover:shadow-md hover:-translate-y-0.5" : "border-gray-100 opacity-60"
+                  className={`relative glass-card-light rounded-3xl border shadow-md overflow-hidden transition-all duration-300 flex flex-col justify-between ${
+                    canAfford ? "border-white/80 hover:shadow-2xl hover:-translate-y-1" : "border-white/40 opacity-60"
                   }`}
                 >
-                  <div className={`h-2 w-full bg-gradient-to-r ${meta.color}`} />
-                  <div className="p-5">
+                  <div className="p-6">
                     {meta.badge && (
-                      <span className={`absolute top-4 right-4 text-xs font-bold px-2.5 py-1 rounded-full bg-gradient-to-r ${meta.color} text-white shadow-sm`}>
+                      <span className="absolute top-5 right-5 text-[10px] font-extrabold px-3 py-1 rounded-full bg-slate-950 text-white border border-white/20 shadow-sm uppercase tracking-wider">
                         {meta.badge}
                       </span>
                     )}
 
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${meta.iconBg}`}>
-                        <Zap className="w-6 h-6" />
+                    <div className="flex items-center gap-3.5 mb-5">
+                      <div className="w-14 h-14 rounded-2xl bg-teal-50 text-[#06555A] flex items-center justify-center shadow-sm">
+                        <Zap className="w-7 h-7 text-amber-500 fill-amber-500" />
                       </div>
                       <div>
-                        <h3 className="font-bold text-gray-900 text-lg leading-tight">{meta.label}</h3>
-                        <p className="text-sm text-gray-500">{meta.description}</p>
+                        <h3 className="font-extrabold text-slate-900 text-lg leading-tight">{meta.label}</h3>
+                        <p className="text-xs text-slate-500 mt-0.5">{meta.description}</p>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between mb-5">
+                    <div className="flex items-center justify-between mb-6 p-4 rounded-2xl bg-white/70 border border-slate-100">
                       <div className="flex items-center gap-1.5">
-                        <Coins className="w-5 h-5 text-amber-500" />
-                        <span className="text-2xl font-extrabold text-gray-900">{pkg.coins}</span>
-                        <span className="text-sm text-gray-400 font-medium">coins</span>
+                        <Coins className="w-4 h-4 text-amber-500" />
+                        <span className="text-xl font-black text-slate-900">{pkg.coins}</span>
+                        <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">coins</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-sm text-gray-400">→</span>
-                        <Star className="w-5 h-5 text-yellow-500" />
-                        <span className="text-2xl font-extrabold text-gray-900">{pkg.xp}</span>
-                        <span className="text-sm text-gray-400 font-medium">XP</span>
+                        <span className="text-xs text-slate-400 font-bold">→</span>
+                        <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                        <span className="text-2xl font-black text-slate-900">+{pkg.xp}</span>
+                        <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">XP</span>
                       </div>
                     </div>
 
                     <button
                       onClick={() => handleBuyXp(pkg)}
                       disabled={!canAfford || !!purchasing}
-                      className={`w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-150 ${
+                      className={`w-full py-3.5 rounded-full font-extrabold text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg ${
                         canAfford && !purchasing
-                          ? `bg-gradient-to-r ${meta.color} text-white hover:opacity-90 shadow-sm`
-                          : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                          ? "bg-slate-950 hover:bg-slate-800 text-white hover:-translate-y-0.5"
+                          : "bg-slate-200 text-slate-400 cursor-not-allowed"
                       }`}
                     >
                       {isLoading ? (
-                        <><Loader2 className="w-4 h-4 animate-spin" /> Purchasing…</>
+                        <><Loader2 className="w-4 h-4 animate-spin" /> Unlocking…</>
                       ) : canAfford ? (
-                        <>Buy for {pkg.coins} coins</>
+                        <>Convert {pkg.coins} Coins → +{pkg.xp} XP</>
                       ) : (
                         <>Need {pkg.coins - coins} more coins</>
                       )}
@@ -377,14 +382,15 @@ export default function ShopPage() {
       {/* Toast */}
       {toast && (
         <div
-          className={`fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-5 py-3 rounded-2xl shadow-xl text-white font-semibold text-sm z-50 ${
-            toast.type === "success" ? "bg-emerald-500" : "bg-red-500"
+          className={`fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-6 py-3.5 rounded-full shadow-2xl text-white font-bold text-xs sm:text-sm z-50 animate-bounce ${
+            toast.type === "success" ? "bg-slate-950 border border-emerald-400" : "bg-rose-600"
           }`}
         >
-          <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
           {toast.msg}
         </div>
       )}
     </DashboardLayout>
   );
 }
+

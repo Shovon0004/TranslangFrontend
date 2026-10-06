@@ -55,17 +55,10 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#38bdf8] via-[#7dd3fc] to-[#e0f2fe] flex flex-col justify-between p-4 sm:p-6 relative overflow-hidden">
-      
-      {/* Background clouds */}
-      <div className="absolute inset-0 pointer-events-none opacity-80">
-        <svg className="absolute -right-20 top-10 w-[600px] h-[350px] text-white/40" viewBox="0 0 500 300" fill="currentColor">
-          <path d="M120,200 Q80,200 60,160 Q40,120 80,90 Q120,60 180,80 Q220,40 280,60 Q340,30 390,80 Q440,80 450,130 Q470,170 430,200 Z" />
-        </svg>
-        <svg className="absolute -left-20 bottom-10 w-[550px] h-[320px] text-white/30" viewBox="0 0 500 300" fill="currentColor">
-          <path d="M100,220 Q50,210 50,160 Q50,110 100,90 Q140,40 210,60 Q270,30 330,70 Q380,60 410,110 Q450,140 430,200 Q390,230 330,220 Z" />
-        </svg>
-      </div>
+    <div className="min-h-screen bg-gif-theme flex flex-col justify-between p-4 sm:p-6 relative overflow-hidden font-sans">
+      {/* Ambient background overlay for superior readability */}
+      <div className="fixed inset-0 bg-slate-950/30 backdrop-blur-[2px] pointer-events-none z-0" />
+
 
       {/* Header */}
       <header className="relative z-10 max-w-5xl mx-auto w-full flex items-center justify-between">
