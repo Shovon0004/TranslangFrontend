@@ -272,8 +272,27 @@ function WaveformBars({ active, energy }: { active: boolean; energy: number }) {
   );
 }
 
+// ─── Clean / Render chat text without raw markdown asterisks ────────────────
+function cleanChatText(text: string): string {
+  if (!text) return "";
+  return text.replace(/\*\*(.*?)\*\*/g, "$1").replace(/\*(.*?)\*/g, "$1");
+}
+
+function renderChatContent(text: string) {
+  if (!text) return "";
+  if (!text.includes("**")) return text;
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**") && part.length >= 4) {
+      return <strong key={i} className="font-semibold">{part.slice(2, -2)}</strong>;
+    }
+    return part;
+  });
+}
+
 // ─── Typewriter effect for AI replies ─────────────────────────────────────────
 function TypewriterText({ text, speed = 6 }: { text: string; speed?: number }) {
+  const clean = cleanChatText(text);
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
 
@@ -282,8 +301,8 @@ function TypewriterText({ text, speed = 6 }: { text: string; speed?: number }) {
     setDone(false);
     let i = 0;
     const id = setInterval(() => {
-      if (i < text.length) {
-        setDisplayed(text.slice(0, i + 1));
+      if (i < clean.length) {
+        setDisplayed(clean.slice(0, i + 1));
         i++;
       } else {
         setDone(true);
@@ -291,7 +310,7 @@ function TypewriterText({ text, speed = 6 }: { text: string; speed?: number }) {
       }
     }, speed);
     return () => clearInterval(id);
-  }, [text, speed]);
+  }, [clean, speed]);
 
   return (
     <span>
@@ -1528,7 +1547,8 @@ export default function TalkToAI() {
   };
 
   const startChat = async (topic: string, aiChoose = false, situation = "") => {
-    setFinalTopic(topic);
+    const chosenTopic = topic || (aiChoose && suggestedTopic?.topic ? suggestedTopic.topic : "");
+    setFinalTopic(chosenTopic);
     setFinalSituation(situation);
     setLoading(true);
     // Unlock AudioContext NOW (user gesture context) before any await
@@ -1541,10 +1561,10 @@ export default function TalkToAI() {
     try {
       const res = await api.post("/ai-talk/chat", {
         messages:     [{ role: "user", content: "Hello! Let's start our conversation." }],
-        topic:        aiChoose ? null : topic || null,
+        topic:        chosenTopic || null,
         situation:    situation || null,
         chosenGender: gender,
-        requestTopic: aiChoose,
+        requestTopic: aiChoose && !chosenTopic,
       });
       const greeting: Message = { role: "assistant", content: res.data.reply, feedback: res.data.feedback };
       setMessages([greeting]);
@@ -2200,7 +2220,7 @@ export default function TalkToAI() {
                                  because the stream IS the animation. */}
                             {msg.role === "assistant" && idx === latestMsgIdx && idx !== streamingMsgIdx
                               ? <TypewriterText text={msg.content} />
-                              : msg.content}
+                              : renderChatContent(msg.content)}
                           </div>
                           {msg.feedback && <FeedbackCard feedback={msg.feedback} />}
                         </div>
