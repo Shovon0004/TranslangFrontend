@@ -1013,18 +1013,18 @@ function LessonsContent() {
           const activeIndex = filtered.findIndex((l) => !completedIds.includes(l._id));
           const currentActiveId = activeIndex !== -1 ? filtered[activeIndex]._id : filtered[0]?._id;
 
-          /* PATHWAY LADDER VIEW (INSPIRED BY USER IMAGE) */
+          /* PATHWAY LADDER VIEW (PIXEL-PERFECT ALIGNMENT) */
           if (viewMode === "path") {
             return (
-              <div className="relative py-12 px-2 max-w-4xl mx-auto overflow-hidden">
-                {/* Center Ladder Rails */}
-                <div className="absolute top-8 bottom-8 left-1/2 -translate-x-1/2 w-16 sm:w-20 flex justify-between px-2 sm:px-3 pointer-events-none z-0">
-                  <div className="w-3 sm:w-3.5 h-full bg-gradient-to-b from-[#d8b4fe] via-[#c4b5fd] to-[#a78bfa] rounded-full shadow-[0_0_15px_rgba(196,181,253,0.7)] border border-white/50" />
-                  <div className="w-3 sm:w-3.5 h-full bg-gradient-to-b from-[#d8b4fe] via-[#c4b5fd] to-[#a78bfa] rounded-full shadow-[0_0_15px_rgba(196,181,253,0.7)] border border-white/50" />
+              <div className="relative py-8 px-2 max-w-4xl mx-auto">
+                {/* Continuous Center Ladder Rails */}
+                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-16 sm:w-20 flex justify-between px-2.5 sm:px-3 pointer-events-none z-0">
+                  <div className="w-3 sm:w-3.5 h-full bg-gradient-to-b from-[#d8b4fe] via-[#c4b5fd] to-[#a78bfa] rounded-full shadow-[0_0_12px_rgba(196,181,253,0.7)] border border-white/60" />
+                  <div className="w-3 sm:w-3.5 h-full bg-gradient-to-b from-[#d8b4fe] via-[#c4b5fd] to-[#a78bfa] rounded-full shadow-[0_0_12px_rgba(196,181,253,0.7)] border border-white/60" />
                 </div>
 
-                {/* Vertical Nodes List */}
-                <div className="space-y-16 sm:space-y-20 relative z-10">
+                {/* Rows of nodes in 3-column grid */}
+                <div className="space-y-12 sm:space-y-16 relative z-10">
                   {filtered.map((lesson, idx) => {
                     const isCompleted = completedIds.includes(lesson._id);
                     const isActive = lesson._id === currentActiveId && !isCompleted;
@@ -1034,129 +1034,160 @@ function LessonsContent() {
                     return (
                       <div
                         key={lesson._id}
-                        className="relative flex items-center justify-center min-h-[140px]"
+                        className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 relative"
                         style={{ animation: `fadeInUp 0.4s ease ${(idx * 0.06).toFixed(2)}s both` }}
                       >
-                        {/* Horizontal Rung Bar Across Rails */}
-                        <div className="absolute left-1/2 -translate-x-1/2 w-24 sm:w-28 h-3.5 sm:h-4 bg-white/95 backdrop-blur-md rounded-full shadow-md border border-white z-0 flex items-center justify-center" />
-
-                        {/* Center Milestone Badge */}
-                        <div className="relative z-20">
-                          {isCompleted ? (
-                            <button
-                              onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
-                              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#65a30d] to-[#84cc16] text-white flex items-center justify-center shadow-[0_4px_20px_rgba(132,204,22,0.65)] border-4 border-white hover:scale-110 active:scale-95 transition-all"
-                              title="Completed! Click to review"
-                            >
-                              <Check className="w-6 h-6 sm:w-7 sm:h-7 stroke-[3.5]" />
-                            </button>
-                          ) : isActive ? (
-                            <div className="relative">
-                              <button
+                        {/* LEFT COLUMN: Card or Empty */}
+                        <div className="flex items-center justify-end">
+                          {isLeft ? (
+                            <div className="flex items-center justify-end w-full max-w-sm">
+                              {/* Floating Card */}
+                              <div
                                 onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
-                                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-[#f59e0b] to-[#fbbf24] text-white flex items-center justify-center shadow-[0_0_25px_rgba(251,191,36,0.85)] border-4 border-white animate-bounce-subtle hover:scale-110 active:scale-95 transition-all"
-                                title="Current Lesson - Click to start!"
+                                className={`w-full rounded-3xl p-5 sm:p-6 transition-all duration-300 transform hover:scale-[1.03] active:scale-95 cursor-pointer select-none z-20 ${
+                                  isActive
+                                    ? "bg-gradient-to-br from-[#6366f1] via-[#7c3aed] to-[#9333ea] text-white shadow-[0_20px_45px_rgba(124,58,237,0.4)] border-2 border-white/40 ring-4 ring-purple-400/20"
+                                    : isCompleted
+                                    ? "bg-white/95 backdrop-blur-2xl text-slate-900 shadow-[0_12px_32px_rgba(0,0,0,0.06)] border border-white hover:shadow-xl"
+                                    : "bg-white/80 backdrop-blur-md text-slate-800 shadow-md border border-white/70 hover:bg-white/95 hover:shadow-lg opacity-90"
+                                }`}
                               >
-                                <Star className="w-7 h-7 sm:w-8 sm:h-8 fill-white stroke-white stroke-[2]" />
-                              </button>
-                              {/* Climber Character Avatar */}
-                              <div className="absolute -top-12 -right-10 sm:-right-12 w-14 h-18 sm:w-16 sm:h-20 pointer-events-none animate-wiggle">
-                                <ClimberAvatar className="w-full h-full drop-shadow-md" />
+                                <div className="flex items-start justify-between gap-2 mb-1.5">
+                                  <h3 className={`text-base sm:text-lg font-black tracking-tight ${isActive ? "text-white drop-shadow" : "text-slate-900"}`}>
+                                    {lesson.title}
+                                  </h3>
+                                  <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border shrink-0 ${
+                                    isActive ? "bg-white/20 text-white border-white/30" : isCompleted ? "bg-lime-50 text-lime-700 border-lime-200" : "bg-slate-100 text-slate-600 border-slate-200"
+                                  }`}>
+                                    {lesson.level}
+                                  </span>
+                                </div>
+
+                                <p className={`text-xs sm:text-sm line-clamp-2 leading-relaxed mb-3.5 ${isActive ? "text-purple-100" : "text-slate-600"}`}>
+                                  {lesson.description}
+                                </p>
+
+                                <div className="flex items-center justify-between pt-2 border-t border-black/5 dark:border-white/10">
+                                  <div className="flex items-center gap-1.5 sm:gap-2">
+                                    <span className={`text-xs font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 ${isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"}`}>
+                                      <Globe className="w-3 h-3" />
+                                      {lesson.language}
+                                    </span>
+                                    <span className={`text-xs font-black px-2 py-0.5 rounded-lg flex items-center gap-1 ${isActive ? "bg-amber-400 text-slate-950 shadow-sm" : "bg-amber-50 text-amber-700 border border-amber-200"}`}>
+                                      <Zap className="w-3 h-3 fill-current" />
+                                      +{lesson.xpReward} XP
+                                    </span>
+                                  </div>
+
+                                  <span className={`text-xs font-extrabold uppercase tracking-wider flex items-center gap-1 ${isActive ? "text-yellow-300" : isCompleted ? "text-[#06555A]" : "text-purple-600"}`}>
+                                    {isActive ? "Continue →" : isCompleted ? "Review" : "Start"}
+                                  </span>
+                                </div>
                               </div>
+
+                              {/* Horizontal Bridge connecting Left Card to Center Rung */}
+                              <div className="w-6 sm:w-10 h-3 bg-white/95 rounded-r-none rounded-l-full shadow-sm border-t border-b border-l border-white -mr-1 z-10 shrink-0" />
                             </div>
                           ) : (
-                            <button
-                              onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
-                              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/90 backdrop-blur-md text-slate-400 flex items-center justify-center shadow-md border-4 border-white hover:scale-105 transition-all"
-                              title="Locked - Click to unlock"
-                            >
-                              <Lock className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2]" />
-                            </button>
+                            <div className="w-full" />
                           )}
                         </div>
 
-                        {/* Connected Floating Lesson Card (Left / Right Layout) */}
-                        <div
-                          className={`w-full flex ${
-                            isLeft ? "justify-start md:pr-24" : "justify-end md:pl-24"
-                          } pointer-events-none`}
-                        >
-                          <div
-                            onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
-                            className={`pointer-events-auto w-[85%] sm:w-[320px] md:w-[360px] rounded-3xl p-5 sm:p-6 transition-all duration-300 transform hover:scale-[1.03] active:scale-95 cursor-pointer select-none ${
-                              isActive
-                                ? "bg-gradient-to-br from-[#6366f1] via-[#7c3aed] to-[#9333ea] text-white shadow-[0_20px_45px_rgba(124,58,237,0.4)] border-2 border-white/40 ring-4 ring-purple-400/20"
-                                : isCompleted
-                                ? "bg-white/95 backdrop-blur-2xl text-slate-900 shadow-[0_12px_32px_rgba(0,0,0,0.06)] border border-white hover:shadow-xl"
-                                : "bg-white/80 backdrop-blur-md text-slate-800 shadow-md border border-white/70 hover:bg-white/95 hover:shadow-lg opacity-90"
-                            }`}
-                          >
-                            <div className="flex items-start justify-between gap-2 mb-2">
-                              <h3
-                                className={`text-base sm:text-lg font-black tracking-tight ${
-                                  isActive ? "text-white drop-shadow" : "text-slate-900"
-                                }`}
-                              >
-                                {lesson.title}
-                              </h3>
-                              <span
-                                className={`text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border shrink-0 ${
-                                  isActive
-                                    ? "bg-white/20 text-white border-white/30"
-                                    : isCompleted
-                                    ? "bg-lime-50 text-lime-700 border-lime-200"
-                                    : "bg-slate-100 text-slate-600 border-slate-200"
-                                }`}
-                              >
-                                {lesson.level}
-                              </span>
-                            </div>
-
-                            <p
-                              className={`text-xs sm:text-sm line-clamp-2 leading-relaxed mb-4 ${
-                                isActive ? "text-purple-100" : "text-slate-600"
-                              }`}
-                            >
-                              {lesson.description}
-                            </p>
-
-                            <div className="flex items-center justify-between pt-2 border-t border-black/5 dark:border-white/10">
-                              <div className="flex items-center gap-2">
-                                <span
-                                  className={`text-xs font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 ${
-                                    isActive
-                                      ? "bg-white/20 text-white"
-                                      : "bg-slate-100 text-slate-600"
-                                  }`}
+                        {/* CENTER COLUMN: Rung Bar & Milestone Badge */}
+                        <div className="relative flex items-center justify-center w-24 sm:w-28 shrink-0 z-20">
+                          {/* Horizontal Rung Bar spanning across the vertical rails */}
+                          <div className="w-24 sm:w-28 h-3.5 sm:h-4 bg-white/95 backdrop-blur-md rounded-full shadow-md border border-white flex items-center justify-center z-10">
+                            {/* Milestone Badge centered right on the rung */}
+                            <div className="relative z-30">
+                              {isCompleted ? (
+                                <button
+                                  onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
+                                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#65a30d] to-[#84cc16] text-white flex items-center justify-center shadow-[0_4px_20px_rgba(132,204,22,0.7)] border-4 border-white hover:scale-110 active:scale-95 transition-all"
+                                  title="Completed! Click to review"
                                 >
-                                  <Globe className="w-3 h-3" />
-                                  {lesson.language}
-                                </span>
-                                <span
-                                  className={`text-xs font-black px-2 py-0.5 rounded-lg flex items-center gap-1 ${
-                                    isActive
-                                      ? "bg-amber-400 text-slate-950 shadow-sm"
-                                      : "bg-amber-50 text-amber-700 border border-amber-200"
-                                  }`}
+                                  <Check className="w-6 h-6 sm:w-7 sm:h-7 stroke-[3.5]" />
+                                </button>
+                              ) : isActive ? (
+                                <div className="relative">
+                                  <button
+                                    onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
+                                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-[#f59e0b] to-[#fbbf24] text-white flex items-center justify-center shadow-[0_0_25px_rgba(251,191,36,0.9)] border-4 border-white animate-bounce-subtle hover:scale-110 active:scale-95 transition-all"
+                                    title="Current Lesson - Click to start!"
+                                  >
+                                    <Star className="w-7 h-7 sm:w-8 sm:h-8 fill-white stroke-white stroke-[2]" />
+                                  </button>
+                                  {/* Climber Character Avatar clinging onto the ladder! */}
+                                  <div className="absolute -top-11 -right-8 sm:-right-9 w-12 sm:w-14 h-16 sm:h-18 pointer-events-none z-40">
+                                    <ClimberAvatar className="w-full h-full drop-shadow-md" />
+                                  </div>
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
+                                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/90 backdrop-blur-md text-slate-400 flex items-center justify-center shadow-md border-4 border-white hover:scale-105 transition-all"
+                                  title="Locked - Click to start"
                                 >
-                                  <Zap className="w-3 h-3 fill-current" />
-                                  +{lesson.xpReward} XP
-                                </span>
-                              </div>
-
-                              <span
-                                className={`text-xs font-extrabold uppercase tracking-wider flex items-center gap-1 ${
-                                  isActive
-                                    ? "text-yellow-300 group-hover:underline"
-                                    : isCompleted
-                                    ? "text-[#06555A]"
-                                    : "text-purple-600"
-                                }`}
-                              >
-                                {isActive ? "Continue →" : isCompleted ? "Review" : "Start"}
-                              </span>
+                                  <Lock className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2]" />
+                                </button>
+                              )}
                             </div>
                           </div>
+                        </div>
+
+                        {/* RIGHT COLUMN: Card or Empty */}
+                        <div className="flex items-center justify-start">
+                          {!isLeft ? (
+                            <div className="flex items-center justify-start w-full max-w-sm">
+                              {/* Horizontal Bridge connecting Center Rung to Right Card */}
+                              <div className="w-6 sm:w-10 h-3 bg-white/95 rounded-l-none rounded-r-full shadow-sm border-t border-b border-r border-white -ml-1 z-10 shrink-0" />
+
+                              {/* Floating Card */}
+                              <div
+                                onClick={() => startLesson(lesson, listTab === "speaking" ? "speaking" : "main")}
+                                className={`w-full rounded-3xl p-5 sm:p-6 transition-all duration-300 transform hover:scale-[1.03] active:scale-95 cursor-pointer select-none z-20 ${
+                                  isActive
+                                    ? "bg-gradient-to-br from-[#6366f1] via-[#7c3aed] to-[#9333ea] text-white shadow-[0_20px_45px_rgba(124,58,237,0.4)] border-2 border-white/40 ring-4 ring-purple-400/20"
+                                    : isCompleted
+                                    ? "bg-white/95 backdrop-blur-2xl text-slate-900 shadow-[0_12px_32px_rgba(0,0,0,0.06)] border border-white hover:shadow-xl"
+                                    : "bg-white/80 backdrop-blur-md text-slate-800 shadow-md border border-white/70 hover:bg-white/95 hover:shadow-lg opacity-90"
+                                }`}
+                              >
+                                <div className="flex items-start justify-between gap-2 mb-1.5">
+                                  <h3 className={`text-base sm:text-lg font-black tracking-tight ${isActive ? "text-white drop-shadow" : "text-slate-900"}`}>
+                                    {lesson.title}
+                                  </h3>
+                                  <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border shrink-0 ${
+                                    isActive ? "bg-white/20 text-white border-white/30" : isCompleted ? "bg-lime-50 text-lime-700 border-lime-200" : "bg-slate-100 text-slate-600 border-slate-200"
+                                  }`}>
+                                    {lesson.level}
+                                  </span>
+                                </div>
+
+                                <p className={`text-xs sm:text-sm line-clamp-2 leading-relaxed mb-3.5 ${isActive ? "text-purple-100" : "text-slate-600"}`}>
+                                  {lesson.description}
+                                </p>
+
+                                <div className="flex items-center justify-between pt-2 border-t border-black/5 dark:border-white/10">
+                                  <div className="flex items-center gap-1.5 sm:gap-2">
+                                    <span className={`text-xs font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 ${isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"}`}>
+                                      <Globe className="w-3 h-3" />
+                                      {lesson.language}
+                                    </span>
+                                    <span className={`text-xs font-black px-2 py-0.5 rounded-lg flex items-center gap-1 ${isActive ? "bg-amber-400 text-slate-950 shadow-sm" : "bg-amber-50 text-amber-700 border border-amber-200"}`}>
+                                      <Zap className="w-3 h-3 fill-current" />
+                                      +{lesson.xpReward} XP
+                                    </span>
+                                  </div>
+
+                                  <span className={`text-xs font-extrabold uppercase tracking-wider flex items-center gap-1 ${isActive ? "text-yellow-300" : isCompleted ? "text-[#06555A]" : "text-purple-600"}`}>
+                                    {isActive ? "Continue →" : isCompleted ? "Review" : "Start"}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="w-full" />
+                          )}
                         </div>
                       </div>
                     );
